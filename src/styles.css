@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* We can add custom Weaver theme variables here later */
+body {
+  background-color: #0f172a; /* Tailwind's slate-900 for a dark mode base */
+  color: #f8fafc; /* Tailwind's slate-50 */
+}
