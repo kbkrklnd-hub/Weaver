@@ -1,3 +1,4 @@
+// v1.0.1
 import { create } from 'zustand';
 import { invoke } from '@tauri-apps/api/core';
 import { ChatMessage } from '../services/ollama';
@@ -7,6 +8,11 @@ export interface HardwareTelemetry {
   vram_percent_used: number;
   compute_tier: string;
   can_load_large_model: boolean;
+}
+
+export interface OpenFile {
+  path: string;
+  name: string;
 }
 
 export interface SystemEvent {
@@ -22,13 +28,16 @@ interface AgentState {
   isGenerating: boolean;
   activeModel: string;
   hardware: HardwareTelemetry | null;
-  activeFilePath: string | null;       
+  activeFilePath: string | null;
+  openFiles: OpenFile[];
   
   addMessage: (msg: ChatMessage) => void;
   appendTokenToLast: (token: string) => void;
   setGenerating: (status: boolean) => void;
   setActiveModel: (model: string) => void;
   setActiveFilePath: (path: string | null) => void;
+  addOpenFile: (path: string, name: string) => void;
+  removeOpenFile: (path: string) => void;
   pollHardware: () => Promise<void>;
   addEvent: (event: Omit<SystemEvent, 'id' | 'timestamp'>) => void;
   clearMessages: () => void;
@@ -46,6 +55,7 @@ export const useAgentStore = create<AgentState>((set) => ({
   activeModel: 'llama3.1:8b', 
   hardware: null,
   activeFilePath: null,
+  openFiles: [], // Added initial state
   
   clearMessages: () => set({ messages: [] }),
   
@@ -87,5 +97,33 @@ export const useAgentStore = create<AgentState>((set) => ({
 
   addEvent: (event) => set((state) => ({
     events: [...state.events, { ...event, id: crypto.randomUUID(), timestamp: new Date() }]
-  }))
+  })),
+
+  // Implemented multi-tab actions
+  addOpenFile: (path, name) => set((state) => {
+    const isAlreadyOpen = state.openFiles.some(file => file.path === path);
+    if (isAlreadyOpen) {
+      return { activeFilePath: path };
+    }
+    return { 
+      openFiles: [...state.openFiles, { path, name }],
+      activeFilePath: path 
+    };
+  }),
+
+  removeOpenFile: (path) => set((state) => {
+    const remainingFiles = state.openFiles.filter(file => file.path !== path);
+    
+    let newActivePath = state.activeFilePath;
+    if (state.activeFilePath === path) {
+      newActivePath = remainingFiles.length > 0 
+        ? remainingFiles[remainingFiles.length - 1].path 
+        : null;
+    }
+
+    return {
+      openFiles: remainingFiles,
+      activeFilePath: newActivePath
+    };
+  }),
 }));

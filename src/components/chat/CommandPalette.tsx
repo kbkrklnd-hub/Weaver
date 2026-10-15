@@ -4,7 +4,7 @@ import { Maximize2, Minimize2, ChevronUp, ChevronDown, Terminal, Copy, ThumbsUp,
 import { useAgentStore } from "../../store/useAgentStore";
 import { usePluginStore } from "../../store/usePluginStore";
 import { useCotStore } from "../../store/useCotStore";
-import { streamChat, cancelGeneration } from "../../services/ollama";
+import { streamChat, cancelGeneration, routePrompt } from "../../services/ollama";
 
 interface CommandPaletteProps {
   chatState: 'collapsed' | 'normal' | 'full';
@@ -185,6 +185,11 @@ export default function CommandPalette({ chatState, setChatState }: CommandPalet
       setInputText("");
       if (inputRef.current) inputRef.current.style.height = 'auto';
       return;
+    } else {
+      // NEW: The Director Routing (Auto-mode)
+      setGenerating(true); 
+      targetModel = await routePrompt(promptContent);
+      setActiveModel(targetModel);
     }
 
     const activePlugin = installedPlugins.find(p => p.namespace === activePluginContext);

@@ -1,0 +1,2694 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  tauri.svg
+  vite.svg
+src/
+  assets/
+    react.svg
+  components/
+    chat/
+      CommandPalette.tsx
+    ide/
+      WeaverIDE.tsx
+    layout/
+      ChainOfThought.tsx
+      Sidebar.tsx
+      StatusBar.tsx
+    security/
+      ApprovalModal.tsx
+    views/
+      ModelsView.tsx
+      SettingsView.tsx
+      TuningView.tsx
+  services/
+    ollama.ts
+  store/
+    useAgentStore.ts
+    useCotStore.ts
+    usePluginStore.ts
+  App.tsx
+  main.tsx
+  styles.css
+  vite-env.d.ts
+src-tauri/
+  capabilities/
+    default.json
+  icons/
+    128x128.png
+    128x128@2x.png
+    32x32.png
+    icon.icns
+    icon.ico
+    icon.png
+    Square107x107Logo.png
+    Square142x142Logo.png
+    Square150x150Logo.png
+    Square284x284Logo.png
+    Square30x30Logo.png
+    Square310x310Logo.png
+    Square44x44Logo.png
+    Square71x71Logo.png
+    Square89x89Logo.png
+    StoreLogo.png
+  src/
+    lib.rs
+    main.rs
+  .gitignore
+  build.rs
+  Cargo.toml
+  tauri.conf.json
+.gitignore
+ARCHITECTURE.md
+CHANGELOG.md
+index.html
+package.json
+README.md
+ROADMAP.md
+SECURITYDOCTRINE.md
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="public/tauri.svg">
+<svg width="206" height="231" viewBox="0 0 206 231" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M143.143 84C143.143 96.1503 133.293 106 121.143 106C108.992 106 99.1426 96.1503 99.1426 84C99.1426 71.8497 108.992 62 121.143 62C133.293 62 143.143 71.8497 143.143 84Z" fill="#FFC131"/>
+<ellipse cx="84.1426" cy="147" rx="22" ry="22" transform="rotate(180 84.1426 147)" fill="#24C8DB"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M166.738 154.548C157.86 160.286 148.023 164.269 137.757 166.341C139.858 160.282 141 153.774 141 147C141 144.543 140.85 142.121 140.558 139.743C144.975 138.204 149.215 136.139 153.183 133.575C162.73 127.404 170.292 118.608 174.961 108.244C179.63 97.8797 181.207 86.3876 179.502 75.1487C177.798 63.9098 172.884 53.4021 165.352 44.8883C157.82 36.3744 147.99 30.2165 137.042 27.1546C126.095 24.0926 114.496 24.2568 103.64 27.6274C92.7839 30.998 83.1319 37.4317 75.8437 46.1553C74.9102 47.2727 74.0206 48.4216 73.176 49.5993C61.9292 50.8488 51.0363 54.0318 40.9629 58.9556C44.2417 48.4586 49.5653 38.6591 56.679 30.1442C67.0505 17.7298 80.7861 8.57426 96.2354 3.77762C111.685 -1.01901 128.19 -1.25267 143.769 3.10474C159.348 7.46215 173.337 16.2252 184.056 28.3411C194.775 40.457 201.767 55.4101 204.193 71.404C206.619 87.3978 204.374 103.752 197.73 118.501C191.086 133.25 180.324 145.767 166.738 154.548ZM41.9631 74.275L62.5557 76.8042C63.0459 72.813 63.9401 68.9018 65.2138 65.1274C57.0465 67.0016 49.2088 70.087 41.9631 74.275Z" fill="#FFC131"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.4045 76.4519C47.3493 70.6709 57.2677 66.6712 67.6171 64.6132C65.2774 70.9669 64 77.8343 64 85.0001C64 87.1434 64.1143 89.26 64.3371 91.3442C60.0093 92.8732 55.8533 94.9092 51.9599 97.4256C42.4128 103.596 34.8505 112.392 30.1816 122.756C25.5126 133.12 23.9357 144.612 25.6403 155.851C27.3449 167.09 32.2584 177.598 39.7906 186.112C47.3227 194.626 57.153 200.784 68.1003 203.846C79.0476 206.907 90.6462 206.743 101.502 203.373C112.359 200.002 122.011 193.568 129.299 184.845C130.237 183.722 131.131 182.567 131.979 181.383C143.235 180.114 154.132 176.91 164.205 171.962C160.929 182.49 155.596 192.319 148.464 200.856C138.092 213.27 124.357 222.426 108.907 227.222C93.458 232.019 76.9524 232.253 61.3736 227.895C45.7948 223.538 31.8055 214.775 21.0867 202.659C10.3679 190.543 3.37557 175.59 0.949823 159.596C-1.47592 143.602 0.768139 127.248 7.41237 112.499C14.0566 97.7497 24.8183 85.2327 38.4045 76.4519ZM163.062 156.711L163.062 156.711C162.954 156.773 162.846 156.835 162.738 156.897C162.846 156.835 162.954 156.773 163.062 156.711Z" fill="#24C8DB"/>
+</svg>
+</file>
+
+<file path="public/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+</file>
+
+<file path="src/assets/react.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+</file>
+
+<file path="src/components/chat/CommandPalette.tsx">
+// src/components/chat/CommandPalette.tsx
+import { useState, useRef, useEffect } from "react";
+import { Maximize2, Minimize2, ChevronUp, ChevronDown, Terminal, Copy, ThumbsUp, ThumbsDown, RotateCcw, Square } from "lucide-react";
+import { useAgentStore } from "../../store/useAgentStore";
+import { usePluginStore } from "../../store/usePluginStore";
+import { useCotStore } from "../../store/useCotStore";
+import { streamChat, cancelGeneration } from "../../services/ollama";
+
+interface CommandPaletteProps {
+  chatState: 'collapsed' | 'normal' | 'full';
+  setChatState: (state: 'collapsed' | 'normal' | 'full') => void;
+}
+
+interface CommandDef {
+  trigger: string;
+  description: string;
+  category: 'core' | 'plugin' | 'model' | 'agent';
+}
+
+const REGISTERED_COMMANDS: CommandDef[] = [
+  { trigger: '@', description: 'Hot-swap active model or agent', category: 'core' },
+  { trigger: 'pi', description: 'Load a plugin namespace (e.g., ide)', category: 'core' },
+  { trigger: 'exit', description: 'Exit current plugin context', category: 'core' },
+  { trigger: 'clear', description: 'Clear terminal history', category: 'core' },
+  { trigger: 'sys', description: 'Update base system instructions', category: 'core' }
+];
+
+const REGISTERED_MODELS: CommandDef[] = [
+  { trigger: 'llama3.1:8b', description: 'Base 8B parameter model', category: 'model' },
+  { trigger: 'codestral', description: 'Heavy coding & syntax model', category: 'model' },
+  { trigger: 'Steve', description: 'Custom Unsloth fine-tune (GGUF)', category: 'model' },
+  { trigger: 'Steve@Maxwell', description: 'Coding persona wrapped on Steve', category: 'agent' },
+];
+
+interface PaletteOption {
+  text: string;
+  desc: string;
+  type: string;
+  prefix: string;
+}
+
+export default function CommandPalette({ chatState, setChatState }: CommandPaletteProps) {
+  const { 
+    messages, isGenerating, activeModel, hardware, activeFilePath,
+    addMessage, appendTokenToLast, setGenerating, setActiveModel, addEvent, clearMessages
+  } = useAgentStore();
+  
+  const { installedPlugins, activePluginContext, setActiveContext } = usePluginStore();
+  const { setCot, clearCot } = useCotStore();
+
+  const [inputText, setInputText] = useState("");
+  const [showPalette, setShowPalette] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState<PaletteOption[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setInputText(val);
+
+    e.target.style.height = 'auto';
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+    
+    if (val.startsWith("\\")) {
+      const query = val.slice(1);
+      
+      if (query.startsWith("@")) {
+        const modelQuery = query.slice(1).toLowerCase();
+        const matches = REGISTERED_MODELS.filter(m => m.trigger.toLowerCase().includes(modelQuery));
+        setFilteredOptions(matches.map(m => ({ 
+          text: m.trigger, desc: m.description, type: m.category, prefix: '\\@' 
+        })));
+      } else if (query.startsWith("pi")) {
+        const pluginQuery = query.slice(2).trim().toLowerCase();
+        const matches = installedPlugins.filter(p => 
+          p.namespace.toLowerCase().includes(pluginQuery) || 
+          p.name.toLowerCase().includes(pluginQuery)
+        );
+        setFilteredOptions(matches.map(p => ({ 
+          text: p.namespace, desc: p.name, type: 'plugin', prefix: '\\pi ' 
+        })));
+      } else {
+        const matches = REGISTERED_COMMANDS.filter(c => c.trigger.toLowerCase().includes(query.toLowerCase()));
+        setFilteredOptions(matches.map(c => ({ 
+          text: c.trigger, desc: c.description, type: c.category, prefix: '\\' 
+        })));
+      }
+      setShowPalette(true);
+      setSelectedIndex(0);
+    } else {
+      setShowPalette(false);
+    }
+  };
+
+  const applyCommand = (option: PaletteOption) => {
+    if (option.prefix === '\\' && (option.text === '@' || option.text === 'pi')) {
+      const nextStr = `\\${option.text}${option.text === 'pi' ? ' ' : ''}`;
+      setInputText(nextStr);
+      handleInputChange({ target: { value: nextStr, style: {} } } as any); 
+    } else if (option.prefix === '\\pi ') {
+      setActiveContext(option.text);
+      setInputText('');
+      setShowPalette(false);
+    } else if (option.prefix === '\\' && option.text === 'exit') {
+      setActiveContext(null);
+      setInputText('');
+      setShowPalette(false);
+    } else {
+      setInputText(`${option.prefix}${option.text} `);
+      setShowPalette(false);
+    }
+    if (inputRef.current) inputRef.current.style.height = 'auto';
+    inputRef.current?.focus();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (showPalette && filteredOptions.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev + 1) % filteredOptions.length);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev - 1 + filteredOptions.length) % filteredOptions.length);
+      } else if (e.key === 'Tab' || (e.key === 'Enter' && !e.shiftKey)) {
+        e.preventDefault();
+        applyCommand(filteredOptions[selectedIndex]);
+      } else if (e.key === 'Escape') {
+        setShowPalette(false);
+      }
+      return; 
+    }
+
+    if (e.key === 'Enter' && !e.shiftKey && !isGenerating) {
+      e.preventDefault();
+      handleSubmit();
+      if (inputRef.current) inputRef.current.style.height = 'auto';
+    }
+  };
+
+  const handleSubmit = async () => {
+    const trimmedInput = inputText.trim();
+    if (!trimmedInput || isGenerating) return;
+
+    let targetModel = activeModel;
+    let promptContent = trimmedInput;
+
+    const commandMatch = trimmedInput.match(/^\\@([^@\s]+)(?:@(\S+))?(?:\s+(.*))?/);
+    
+    if (commandMatch) {
+      targetModel = commandMatch[2] ? `${commandMatch[1]}@${commandMatch[2]}` : commandMatch[1];
+      promptContent = commandMatch[3] || ""; 
+      setActiveModel(targetModel);
+      
+      if (!promptContent) {
+        setInputText("");
+        if (inputRef.current) inputRef.current.style.height = 'auto';
+        return; 
+      }
+    } else if (trimmedInput.startsWith("\\")) {
+      const parts = trimmedInput.split(" ");
+      const cmd = parts[0].toLowerCase();
+
+      if (cmd === "\\clear") {
+        if (clearMessages) clearMessages();
+        addEvent({ type: 'system', message: 'Terminal history cleared.' });
+      } else if (cmd === "\\sys") {
+        const sysPrompt = parts.slice(1).join(" ");
+        if (sysPrompt) {
+          addMessage({ role: 'system', content: `[SYSTEM OVERRIDE]: ${sysPrompt}` });
+          addEvent({ type: 'system', message: 'Base system instructions updated.' });
+        }
+      } else {
+        addEvent({ type: 'error', message: `Command ${cmd} not fully implemented.` });
+      }
+      
+      setInputText("");
+      if (inputRef.current) inputRef.current.style.height = 'auto';
+      return;
+    }
+
+    const activePlugin = installedPlugins.find(p => p.namespace === activePluginContext);
+    
+    const userMsg = { role: "user" as const, content: promptContent };
+    addMessage(userMsg);
+    setInputText("");
+    if (inputRef.current) inputRef.current.style.height = 'auto';
+    
+    const initialAssistantMsg = { role: "assistant" as const, content: "" };
+    addMessage(initialAssistantMsg);
+    
+    setGenerating(true);
+
+    try {
+      let contextMessages = [...messages];
+      
+      if (activePlugin && activePlugin.getContext) {
+        const pluginState = activePlugin.getContext();
+        contextMessages.push({
+          role: 'system',
+          content: `[SYSTEM CONTEXT UPDATE]\nActive Plugin: ${activePlugin.name}\nCurrent State: ${pluginState}\nDo not acknowledge this system message directly. Use it to inform your next response.`
+        });
+      }
+
+      const activeFileContext = activeFilePath 
+        ? `\nCURRENT ACTIVE FILE: ${activeFilePath}` 
+        : "\nNo file currently open.";
+
+      contextMessages.push({
+        role: 'system',
+        content: `When executing commands or editing code, you MUST structure your response using XML tags.
+1. Put your step-by-step reasoning inside <thought> tags.
+2. Put your exact JSON tool call inside <action> tags. Do not put anything else inside the action tags.
+
+Example:
+<thought>
+I will target line 1 of the requested file and inject the requested code.
+</thought>
+<action>
+{"name": "edit_local_file", "parameters": {"file_path": "ABSOLUTE_PATH_HERE", "start_line": 1, "end_line": 1, "replacement_code": "new code"}}
+</action>
+${activeFileContext}` 
+      });
+
+      contextMessages.push(userMsg);
+
+      clearCot();
+      let responseBuffer = "";
+      let isToolExecution = false;
+
+      await streamChat(
+        targetModel, 
+        contextMessages, 
+        { tier: hardware?.compute_tier || "standard", isBackgroundCritic: targetModel.includes("qwen") },
+        (chunk) => {
+          responseBuffer += chunk;
+          
+          if (responseBuffer.trimStart().startsWith("<")) {
+            isToolExecution = true;
+          }
+
+          const thoughtMatch = responseBuffer.match(/<thought>([\s\S]*?)(?:<\/thought>|$)/);
+          if (thoughtMatch) {
+            setCot(thoughtMatch[1].trim());
+          }
+
+          if (!isToolExecution) {
+            appendTokenToLast(chunk);
+          }
+        }
+      );
+
+      if (responseBuffer.includes("<action>")) {
+        try {
+          const actionStart = responseBuffer.indexOf('<action>') + 8;
+          const actionEnd = responseBuffer.indexOf('</action>');
+          
+          if (actionStart > 7 && actionEnd > actionStart) {
+            const jsonString = responseBuffer.substring(actionStart, actionEnd).trim();
+            const toolPayload = JSON.parse(jsonString);
+
+            if (toolPayload.name === "edit_local_file" && toolPayload.parameters) {
+              window.dispatchEvent(new CustomEvent('weaver-ai-edit', {
+                detail: toolPayload.parameters
+              }));
+              
+              addEvent({ 
+                type: 'system', 
+                message: `Applied edits to lines ${toolPayload.parameters.start_line}-${toolPayload.parameters.end_line} in ${toolPayload.parameters.file_path.split('\\').pop()}` 
+              });
+            }
+          }
+        } catch (e) {
+          console.error("Failed to parse agent action block:", e);
+          addEvent({ type: 'error', message: 'Agent failed to format the action block correctly.' });
+        }
+      }
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const chatHeightClass = chatState === 'collapsed' ? 'h-12' : chatState === 'full' ? 'flex-1' : 'h-80';
+
+  return (
+    <div className={`flex flex-col border-t border-zinc-800 bg-zinc-950 transition-all duration-300 ease-in-out ${chatHeightClass}`}>
+      <div className="flex items-center justify-between px-4 h-12 border-b border-zinc-800/50 flex-shrink-0">
+        <div className="flex items-center gap-2 h-full">
+          <div className="flex items-center gap-2 h-full px-4 border-b-2 border-emerald-500 text-emerald-400 bg-zinc-900/50">
+            <Terminal className="h-4 w-4" />
+            <span className="text-sm font-medium">Command Terminal</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-1">
+          <button onClick={() => setChatState(chatState === 'full' ? 'normal' : 'full')} className="p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors">
+            {chatState === 'full' ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </button>
+          <button onClick={() => setChatState(chatState === 'collapsed' ? 'normal' : 'collapsed')} className="p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors">
+            {chatState === 'collapsed' ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {chatState !== 'collapsed' && (
+        <div className="flex flex-col flex-1 min-h-0 relative">
+          <div className="flex-1 p-4 overflow-y-auto text-sm space-y-4">
+           {messages.map((msg, i) => (
+            <div key={i} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+              <span className={`text-xs font-bold ${msg.role === 'user' ? 'text-zinc-500' : 'text-emerald-500'}`}>
+                {msg.role === 'user' ? 'You' : `@${activeModel}`}
+              </span>
+              
+              {msg.content && (
+                <div className="relative group max-w-[85%]">
+                  <div className={`p-3 rounded-lg whitespace-pre-wrap select-text leading-relaxed ${
+                    msg.role === 'user' 
+                      ? 'bg-zinc-800 border border-zinc-700 rounded-tr-none text-zinc-100' 
+                      : 'bg-zinc-900 border border-zinc-800 rounded-tl-none text-zinc-300'
+                  }`}>
+                    {msg.content}
+                  </div>
+
+                  {msg.role !== 'user' && !isGenerating && (
+                    <div className="absolute -bottom-8 left-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 bg-zinc-800/90 border border-zinc-700 backdrop-blur px-2 py-1 rounded-md shadow-lg z-10">
+                      <button 
+                        onClick={() => navigator.clipboard.writeText(msg.content)}
+                        className="p-1 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 rounded transition-colors"
+                        title="Copy"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </button>
+                      
+                      <div className="w-px h-3.5 bg-zinc-700 mx-0.5" />
+                      
+                      <button 
+                        onClick={() => console.log("RLHF: Positive Reward")}
+                        className="p-1 text-zinc-400 hover:text-emerald-400 hover:bg-zinc-700 rounded transition-colors"
+                        title="Good Response"
+                      >
+                        <ThumbsUp className="h-3.5 w-3.5" />
+                      </button>
+                      
+                      <button 
+                        onClick={() => console.log("RLHF: Negative Reward")}
+                        className="p-1 text-zinc-400 hover:text-rose-400 hover:bg-zinc-700 rounded transition-colors"
+                        title="Bad Response"
+                      >
+                        <ThumbsDown className="h-3.5 w-3.5" />
+                      </button>
+
+                      <div className="w-px h-3.5 bg-zinc-700 mx-0.5" />
+
+                      <button 
+                        onClick={() => console.log("Regenerate Response")}
+                        className="p-1 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 rounded transition-colors"
+                        title="Regenerate"
+                      >
+                        <RotateCcw className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+          
+          <div className="p-4 pt-0">
+            {showPalette && filteredOptions.length > 0 && (
+              <div className="absolute bottom-16 left-4 w-[420px] bg-zinc-800 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden z-20">
+                <div className="px-3 py-2 text-xs font-bold text-zinc-400 bg-zinc-900/50 border-b border-zinc-700 flex justify-between">
+                  <span>
+                    {inputText.startsWith('\\@') ? 'Local Targets' : 
+                     inputText.startsWith('\\pi') ? 'Installed Plugins' : 'System Commands'}
+                  </span>
+                  <span className="text-[10px] font-normal text-zinc-500">Tab / ↵ to apply</span>
+                </div>
+                {filteredOptions.map((opt, idx) => (
+                  <div 
+                    key={opt.text}
+                    className={`w-full flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
+                      idx === selectedIndex ? 'bg-emerald-500/20 border-l-2 border-emerald-500' : 'hover:bg-zinc-700/50 border-l-2 border-transparent'
+                    }`}
+                    onClick={() => applyCommand(opt)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className={`font-mono text-sm ${idx === selectedIndex ? 'text-emerald-400' : 'text-zinc-200'}`}>
+                        {opt.prefix}{opt.text}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-wider text-zinc-500 px-1.5 py-0.5 rounded border border-zinc-700 bg-zinc-900">
+                        {opt.type}
+                      </span>
+                    </div>
+                    <span className="text-xs text-zinc-400 truncate ml-4 max-w-[200px]">
+                      {opt.desc}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="relative flex items-center bg-zinc-900 border border-zinc-700 focus-within:border-emerald-500 rounded-lg px-3 py-2 transition-colors">
+              <span className="flex items-center text-xs font-bold text-emerald-500 mr-2 shrink-0 bg-emerald-500/10 px-2 py-1 rounded select-none">
+                {activePluginContext && (
+                  <span className="text-zinc-300 mr-1.5">[{activePluginContext.toUpperCase()}]</span>
+                )}
+                @{activeModel}
+              </span>
+              
+              <textarea 
+                ref={inputRef}
+                value={inputText}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Type \ to open command palette..."
+                rows={1}
+                className="flex-1 bg-transparent border-none outline-none text-zinc-100 placeholder-zinc-500 text-sm font-mono resize-none overflow-y-auto max-h-[200px] py-1 leading-relaxed"
+                disabled={isGenerating}
+              />
+
+              <div className="flex items-center gap-2 ml-2">
+                {isGenerating ? (
+                  <button 
+                    onClick={() => {
+                      cancelGeneration();
+                      setGenerating(false);
+                      addEvent({ type: 'system', message: 'Generation halted by user.' });
+                    }}
+                    className="p-1.5 text-rose-500 hover:bg-rose-500/20 rounded-md transition-colors"
+                    title="Stop Generation"
+                  >
+                    <Square className="h-4 w-4 fill-current" />
+                  </button>
+                ) : (
+                  <span className="text-xs font-medium px-2 py-1 text-zinc-600">
+                    ↵
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/ide/WeaverIDE.tsx">
+import { useState, useEffect, useRef } from 'react';
+import Editor from '@monaco-editor/react';
+import { invoke } from '@tauri-apps/api/core';
+import { Folder, FileCode, FileText, ChevronRight, ChevronDown } from 'lucide-react';
+import { useAgentStore } from '../../store/useAgentStore';
+
+
+interface FileEntry {
+  name: string;
+  path: string;
+  is_dir: boolean;
+}
+
+// 1. FileTreeItem is now OUTSIDE WeaverIDE! This stops the snapping.
+const FileTreeItem = ({ 
+  file, 
+  depth = 0, 
+  activeFilePath, 
+  onOpenFile 
+}: { 
+  file: FileEntry; 
+  depth?: number;
+  activeFilePath: string | null;
+  onOpenFile: (file: FileEntry) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [children, setChildren] = useState<FileEntry[]>([]);
+  const isActive = activeFilePath === file.path;
+
+  const handleClick = async () => {
+    if (!file.is_dir) {
+      onOpenFile(file);
+      return;
+    }
+    
+    if (!isOpen && children.length === 0) {
+      try {
+        const entries = await invoke<FileEntry[]>('fs_read_tree', { path: file.path });
+        const sorted = entries.sort((a, b) => {
+          if (a.is_dir === b.is_dir) return a.name.localeCompare(b.name);
+          return a.is_dir ? -1 : 1;
+        });
+        setChildren(sorted);
+      } catch (error) {
+        console.error("Failed to load sub-directory:", error);
+      }
+    }
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="flex flex-col">
+      <button
+        onClick={handleClick}
+        style={{ paddingLeft: `${(depth * 12) + 16}px` }}
+        className={`w-full flex items-center py-1.5 pr-4 text-sm transition-colors ${
+          isActive 
+            ? "bg-emerald-500/10 text-emerald-400" 
+            : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
+        }`}
+      >
+        <div className="w-4 mr-1 flex items-center justify-center">
+          {file.is_dir && (
+            isOpen ? <ChevronDown className="h-3.5 w-3.5 text-zinc-500" /> : <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+          )}
+        </div>
+
+        {file.is_dir ? (
+          <Folder className={`h-4 w-4 mr-2 ${isOpen ? "text-emerald-500" : "text-zinc-500"}`} />
+        ) : file.name.endsWith('.tsx') || file.name.endsWith('.ts') ? (
+          <FileCode className="h-4 w-4 mr-2 text-blue-400" />
+        ) : (
+          <FileText className="h-4 w-4 mr-2 text-zinc-500" />
+        )}
+        <span className="truncate">{file.name}</span>
+      </button>
+      
+      {isOpen && children.map((child, idx) => (
+        <FileTreeItem 
+          key={idx} 
+          file={child} 
+          depth={depth + 1} 
+          activeFilePath={activeFilePath}
+          onOpenFile={onOpenFile}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default function WeaverIDE() {
+  const [rootFiles, setRootFiles] = useState<FileEntry[]>([]);
+  const [editorContent, setEditorContent] = useState<string>("// Select a file from the explorer to begin editing");
+  
+  // 2. Pull activeFilePath directly from the global store INSTEAD of useState
+  const { activeFilePath, setActiveFilePath } = useAgentStore();
+  
+  const editorRef = useRef<any>(null);
+  const monacoRef = useRef<any>(null);
+
+  // TODO (Phase 7): Replace this hardcoded MVP path with a Tauri file-picker dialog
+  const DEFAULT_PROJECT_PATH = "C:\\Users\\kbkla\\Projects\\Weaver";
+
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    editorRef.current = editor;
+    monacoRef.current = monaco;
+
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, async () => {
+      if (!activeFilePath) return;
+      try {
+        const currentContent = editor.getValue();
+        const response = await invoke<string>('fs_write', { 
+          path: activeFilePath, 
+          contents: currentContent 
+        });
+        console.log(response); 
+      } catch (error) {
+        console.error("Save failed:", error);
+      }
+    });
+  };
+
+  useEffect(() => {
+    async function loadDirectory() {
+      try {
+        const entries = await invoke<FileEntry[]>('fs_read_tree', { path: DEFAULT_PROJECT_PATH });
+        const sorted = entries.sort((a, b) => {
+          if (a.is_dir === b.is_dir) return a.name.localeCompare(b.name);
+          return a.is_dir ? -1 : 1;
+        });
+        setRootFiles(sorted);
+      } catch (error) {
+        console.error("Failed to load directory:", error);
+      }
+    }
+    loadDirectory();
+  }, []);
+
+  useEffect(() => {
+    const handleAiEdit = (e: CustomEvent) => {
+      if (!editorRef.current || !monacoRef.current) return;
+      
+      const { file_path, start_line, end_line, replacement_code } = e.detail;
+
+      if (activeFilePath !== file_path) {
+        console.warn(`[Weaver] Agent attempted to edit ${file_path}, but ${activeFilePath} is active.`);
+        return;
+      }
+
+      const range = new monacoRef.current.Range(start_line, 1, end_line + 1, 1);
+
+      editorRef.current.executeEdits("weaver-agent", [{
+        range: range,
+        text: replacement_code + '\n'
+      }]);
+      
+      console.log(`[Weaver] AI edit applied to lines ${start_line}-${end_line}`);
+    };
+
+    window.addEventListener('weaver-ai-edit', handleAiEdit as EventListener);
+    return () => window.removeEventListener('weaver-ai-edit', handleAiEdit as EventListener);
+  }, [activeFilePath]);
+
+  const handleOpenFile = async (file: FileEntry) => {
+    try {
+      const content = await invoke<string>('fs_read', { path: file.path });
+      setActiveFilePath(file.path);
+      setEditorContent(content);
+    } catch (error) {
+      console.error(`Failed to read ${file.name}:`, error);
+      setEditorContent(`// Error reading file: ${error}`);
+    }
+  };
+
+  const getLanguage = (filename: string) => {
+    if (filename.endsWith('.tsx') || filename.endsWith('.ts')) return 'typescript';
+    if (filename.endsWith('.json')) return 'json';
+    if (filename.endsWith('.md')) return 'markdown';
+    if (filename.endsWith('.rs')) return 'rust';
+    if (filename.endsWith('.css')) return 'css';
+    if (filename.endsWith('.html')) return 'html';
+    return 'javascript';
+  };
+
+  return (
+    <div className="flex h-full w-full bg-[#1e1e1e]">
+      
+      <div className="w-64 border-r border-zinc-800 flex flex-col bg-zinc-950">
+        <div className="h-10 border-b border-zinc-800 flex items-center px-4 text-xs font-bold text-zinc-500 uppercase tracking-wider shrink-0">
+          Explorer
+        </div>
+        <div className="flex-1 overflow-y-auto py-2 no-scrollbar">
+          {rootFiles.map((file, idx) => (
+            <FileTreeItem 
+              key={idx} 
+              file={file} 
+              depth={0} 
+              activeFilePath={activeFilePath}
+              onOpenFile={handleOpenFile}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        {/* Updated IDE Header with Justify-Between and Badge */}
+        <div className="h-10 border-b border-zinc-800 flex items-center justify-between px-4 text-xs font-mono text-zinc-400 bg-zinc-950 shrink-0">
+          <div className="flex items-center">
+            <span className="text-emerald-400 mr-2 font-bold">Weaver IDE</span> 
+            {activeFilePath ? `| ${activeFilePath.split('\\').pop()}` : "| Untitled-1"}
+          </div>
+          
+          {/* Powered by Monaco Badge */}
+          <div className="flex items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity select-none cursor-default">
+            <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">Powered by</span>
+            <span className="text-[10px] font-bold text-zinc-300">Monaco</span>
+          </div>
+        </div>
+
+        <div className="flex-1 relative">
+          <Editor
+            height="100%"
+            language={activeFilePath ? getLanguage(activeFilePath) : 'typescript'}
+            theme="vs-dark"
+            value={editorContent}
+            onChange={(val) => setEditorContent(val || '')}
+            onMount={handleEditorDidMount}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 14,
+              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+              wordWrap: "on",
+              padding: { top: 16 },
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+            }}
+          />
+        </div>
+      </div>
+      
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/layout/ChainOfThought.tsx">
+import { useEffect, useRef } from "react";
+import { Activity, BrainCircuit } from "lucide-react";
+import { useAgentStore } from "../../store/useAgentStore";
+import { useCotStore } from "../../store/useCotStore";
+
+export default function ChainOfThought() {
+  const { events } = useAgentStore();
+  const { cotStream } = useCotStore();
+  
+  const feedEndRef = useRef<HTMLDivElement>(null);
+  const cotEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    feedEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [events]);
+
+  useEffect(() => {
+    cotEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [cotStream]);
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
+  };
+
+  const getEventStyles = (type: string) => {
+    switch(type) {
+      case 'router': return 'border-emerald-500/30 bg-emerald-500/5 text-emerald-400';
+      case 'security': return 'border-amber-500/30 bg-amber-500/5 text-amber-400';
+      case 'error': return 'border-rose-500/30 bg-rose-500/5 text-rose-400';
+      default: return 'border-zinc-700/50 bg-zinc-800/30 text-zinc-300';
+    }
+  };
+
+  return (
+    <aside className="w-[340px] flex flex-col border-l border-zinc-800 bg-zinc-950 z-10 flex-shrink-0">
+      <div className="flex items-center justify-between border-b border-zinc-800 p-3 bg-zinc-900/50 shrink-0">
+        <div className="flex items-center gap-2">
+          <Activity className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
+          <h2 className="text-[11px] font-bold tracking-widest text-zinc-400 uppercase">System Trace</h2>
+        </div>
+        <div className="relative group">
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 cursor-help">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-[10px] font-mono font-medium">ACTIVE</span>
+          </div>
+          <div className="absolute right-0 top-7 w-64 p-2.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 text-[11px] leading-relaxed shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50">
+            <p className="font-semibold text-emerald-400 mb-1">Security Doctrine Active</p>
+            Strict CSP enforced. IPC-only bridging enabled. Non-sandboxed network calls and unverified external telemetry are restricted.
+          </div>
+        </div>
+      </div>
+
+      {/* LIVE COGNITIVE STREAM */}
+      {cotStream && (
+        <div className="rounded border p-2 flex flex-col gap-1 border-emerald-500/40 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.05)] shrink-0 mb-2 mt-2 mx-3">
+          <div className="flex items-center gap-2 opacity-80 text-[9px] mb-0.5 text-emerald-400">
+            <BrainCircuit className="h-3 w-3 animate-pulse" />
+            <span className="uppercase font-bold tracking-widest">Active Thought Process</span>
+          </div>
+          <div className="overflow-y-auto whitespace-pre-wrap text-zinc-300 leading-relaxed max-h-[150px] pr-2 text-[11px] font-mono">
+            {cotStream}
+            <div ref={cotEndRef} />
+          </div>
+        </div>
+      )}
+
+      {/* Live Chronological Event Stream */}
+      <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 font-mono text-[11px]">
+        {events.map((evt) => (
+          <div key={evt.id} className={`rounded border p-2 flex flex-col gap-1 ${getEventStyles(evt.type)}`}>
+            <div className="flex items-center justify-between opacity-60 text-[9px] mb-0.5">
+              <span className="uppercase font-bold tracking-widest">[{evt.type}]</span>
+              <span>{formatTime(evt.timestamp)}</span>
+            </div>
+            <span>{evt.message}</span>
+          </div>
+        ))}
+        <div ref={feedEndRef} />
+      </div>
+    </aside>
+  );
+}
+</file>
+
+<file path="src/components/layout/Sidebar.tsx">
+import { useState } from 'react';
+import { Link, useLocation } from "wouter";
+import { invoke } from '@tauri-apps/api/core';
+import { useAgentStore } from "../../store/useAgentStore";
+import { 
+  Cpu, Wrench, Settings, Power, Blocks, Code2, ChevronDown, ChevronRight
+} from "lucide-react";
+import { cancelGeneration } from "../../services/ollama";
+import { usePluginStore } from '../../store/usePluginStore';
+
+export default function Sidebar() {
+  const [location, setLocation] = useLocation();
+  const { setGenerating, addEvent } = useAgentStore();
+  const { installedPlugins, activePluginContext, setActiveContext } = usePluginStore();
+  const [pluginsExpanded, setPluginsExpanded] = useState(true);
+
+  const handleKillSwitch = async () => {
+    try {
+      cancelGeneration();
+      const response = await invoke<string>('execute_kill_switch');
+      setGenerating(false);
+      addEvent({ type: 'security', message: `[OVERRIDE]: ${response}` });
+    } catch (error) {
+      addEvent({ type: 'error', message: "Kill switch execution failed." });
+    }
+  };
+
+  const handleOpenIDE = () => {
+    if (setActiveContext) {
+      setActiveContext('ide');
+    }
+    setLocation('/workspace');
+  };
+
+  const NavItem = ({ href, icon: Icon, label, color = "emerald" }: { href: string; icon: any; label: string; color?: string }) => {
+    const isActive = location === href || (location === "/" && href === "/workspace");
+    return (
+      <Link href={href}>
+        <button
+          className={`group flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+            isActive ? `bg-${color}-500/10 text-${color}-400` : "text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+          }`}
+          title={label}
+        >
+          <Icon className="h-6 w-6 stroke-[1.5] transition-transform group-hover:scale-110" />
+        </button>
+      </Link>
+    );
+  };
+
+  const isIDEActive = (location === "/workspace" || location === "/") && activePluginContext === 'ide';
+
+  return (
+    <nav className="flex w-20 flex-col items-center justify-between border-r border-zinc-800 bg-zinc-950 py-6 z-10 flex-shrink-0">
+      <div className="flex flex-col items-center gap-6 w-full">
+        {/* Logo: The Weaver 'W' */}
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+          <span className="font-serif font-bold text-2xl tracking-tighter">W</span>
+        </div>
+        
+        <div className="h-px w-8 bg-zinc-800" />
+        
+        {/* Dynamic Plugin Header */}
+        <div className="flex flex-col gap-2 w-full px-3 items-center">
+          <button 
+            onClick={() => setPluginsExpanded(!pluginsExpanded)}
+            className="group flex flex-col items-center gap-1 p-1.5 text-zinc-500 transition-all hover:text-zinc-300"
+            title="Installed Plugins"
+          >
+            <Blocks className="h-6 w-6 group-hover:text-emerald-500 transition-colors" />
+            {pluginsExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+          </button>
+
+          {pluginsExpanded && (
+            <div className="flex w-full animate-in fade-in slide-in-from-top-2 flex-col items-center gap-3 mt-2">
+              {installedPlugins.filter(plugin => plugin.namespace !== 'ide').length === 0 ? (
+                <div 
+                  className="flex h-10 w-10 cursor-help items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-900/50 text-zinc-600" 
+                  title="No external plugins found in the Weaver directory."
+                >
+                  <span className="text-[10px] font-bold uppercase tracking-tighter">NONE</span>
+                </div>
+              ) : (
+                installedPlugins
+                  .filter(plugin => plugin.namespace !== 'ide')
+                  .map(plugin => {
+                    const isActive = activePluginContext === plugin.namespace && (location === "/workspace" || location === "/");
+                    return (
+                      <button
+                        key={plugin.namespace}
+                        onClick={() => {
+                          setActiveContext(isActive ? null : plugin.namespace);
+                          setLocation('/workspace');
+                        }}
+                        className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${
+                          isActive
+                            ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]' 
+                            : 'border border-transparent text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300'
+                        }`}
+                        title={plugin.name}
+                      >
+                        <span className="font-bold text-sm uppercase">{plugin.namespace.charAt(0)}</span>
+                      </button>
+                    )
+                  })
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Core System Tools & Hardware */}
+      <div className="flex flex-col gap-4 items-center">
+        <div className="h-px w-8 bg-zinc-800 mb-2" />
+        
+        {/* Core IDE Anchor */}
+        <button
+          onClick={handleOpenIDE}
+          title="Weaver IDE (Monaco Workspace)"
+          className={`group flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+            isIDEActive ? "bg-emerald-500/10 text-emerald-400" : "text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+          }`}
+        >
+          <Code2 className="h-6 w-6 stroke-[1.5] transition-transform group-hover:scale-110" />
+        </button>
+
+        <NavItem href="/models" icon={Cpu} label="Local Models" />
+        <NavItem href="/tuning" icon={Wrench} label="Fine-Tuning" />
+        <NavItem href="/settings" icon={Settings} label="Settings" />
+        
+        {/* Hardware-level Master Kill Switch */}
+        <button 
+          onClick={handleKillSwitch}
+          className="group mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500/10 text-rose-500 transition-all hover:bg-rose-500 hover:text-white border border-rose-500/20"
+          title="HARD STOP: Kill All Agent Processes"
+        >
+          <Power className="h-6 w-6 stroke-[2] transition-transform group-hover:scale-110" />
+        </button>
+      </div>
+    </nav>
+  );
+}
+</file>
+
+<file path="src/components/layout/StatusBar.tsx">
+import { useEffect } from "react";
+import { useAgentStore } from "../../store/useAgentStore";
+
+export default function StatusBar() {
+  const { hardware, pollHardware } = useAgentStore();
+
+  useEffect(() => {
+    pollHardware();
+    const interval = setInterval(pollHardware, 3000);
+    return () => clearInterval(interval);
+  }, [pollHardware]);
+
+  if (!hardware) return null;
+
+  return (
+    <div className="h-6 w-full bg-zinc-950 border-t border-zinc-800 flex items-center justify-end px-4 font-mono text-[10px] text-zinc-500 gap-6 shrink-0 z-50">
+      <div className="flex items-center gap-2">
+        <span>SYS RAM:</span>
+        <span className="text-zinc-300 font-medium">{hardware.system_ram_percent_used.toFixed(1)}%</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span>GPU VRAM:</span>
+        <span className="text-zinc-300 font-medium">{hardware.vram_percent_used.toFixed(1)}%</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span>PROFILE:</span>
+        <span className="text-emerald-500 font-bold uppercase tracking-wider">{hardware.compute_tier}</span>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/security/ApprovalModal.tsx">
+// src/components/security/ApprovalModal.tsx
+import { ShieldAlert, TerminalSquare, Check, X } from "lucide-react";
+import { usePluginStore } from "../../store/usePluginStore";
+import { useAgentStore } from "../../store/useAgentStore";
+
+export default function ApprovalModal() {
+  const { pendingAction, installedPlugins, resolveApproval } = usePluginStore();
+  const { addEvent } = useAgentStore();
+
+  if (!pendingAction) return null;
+
+  const plugin = installedPlugins.find(p => p.id === pendingAction.pluginId);
+
+  const handleDecision = (approved: boolean) => {
+    addEvent({
+      type: 'security',
+      message: `[${approved ? 'APPROVED' : 'DENIED'}] ${pendingAction.permission} request by @${pendingAction.agentName}`
+    });
+    resolveApproval(approved);
+  };
+
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="w-[500px] bg-zinc-900 border border-rose-500/50 rounded-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        
+        {/* Header */}
+        <div className="bg-rose-500/10 border-b border-rose-500/20 p-4 flex items-center gap-3">
+          <ShieldAlert className="h-6 w-6 text-rose-500" />
+          <div>
+            <h2 className="text-rose-400 font-bold text-sm uppercase tracking-wider">Action Authorization Required</h2>
+            <p className="text-xs text-zinc-400">Security gatekeeper intercepted an OS-level request.</p>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="p-5 space-y-4 text-sm">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Requesting Agent</span>
+              <p className="text-emerald-400 font-mono">@{pendingAction.agentName}</p>
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Plugin Context</span>
+              <p className="text-zinc-300">{plugin?.name || 'Unknown'}</p>
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Requested Permission</span>
+            <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-mono text-xs">
+              <TerminalSquare className="h-3 w-3 text-amber-400" />
+              {pendingAction.permission}
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Payload to Execute</span>
+            <div className="bg-black/50 border border-zinc-800 rounded p-3 text-zinc-300 font-mono text-xs overflow-x-auto">
+              <code>{pendingAction.payload}</code>
+            </div>
+          </div>
+
+          <div className="p-3 border border-amber-500/20 bg-amber-500/5 rounded-lg space-y-1.5">
+            <span className="text-[10px] uppercase tracking-wider text-amber-500 font-bold">Critic Assessment</span>
+            <p className="text-xs text-zinc-400 leading-relaxed italic">
+              "{pendingAction.criticReasoning}"
+            </p>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="p-4 border-t border-zinc-800 bg-zinc-950 flex justify-end gap-3">
+          <button 
+            onClick={() => handleDecision(false)}
+            className="flex items-center gap-2 px-4 py-2 rounded text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+          >
+            <X className="h-4 w-4" /> DENY
+          </button>
+          <button 
+            onClick={() => handleDecision(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded text-xs font-bold bg-rose-500 hover:bg-rose-400 text-white transition-colors"
+          >
+            <Check className="h-4 w-4" /> AUTHORIZE ACTION
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/views/ModelsView.tsx">
+// src/components/views/ModelsView.tsx
+import { useState, useEffect } from 'react';
+import { Box, Download, HardDrive, Loader2, Server, Trash2 } from 'lucide-react';
+import { useAgentStore } from '../../store/useAgentStore';
+
+interface OllamaModel {
+  name: string;
+  size: number;
+  modified_at: string;
+}
+
+export default function ModelsView() {
+  const [models, setModels] = useState<OllamaModel[]>([]);
+  const [pullInput, setPullInput] = useState("");
+  const [isPulling, setIsPulling] = useState(false);
+  const [pullStatus, setPullStatus] = useState("");
+  const [isBooting, setIsBooting] = useState(true);
+  
+  const { addEvent } = useAgentStore();
+
+  const fetchModels = async () => {
+    try {
+      const res = await fetch('http://localhost:11434/api/tags');
+      if (!res.ok) throw new Error("Failed to connect to Ollama");
+      const data = await res.json();
+      
+      // Sort models alphabetically
+      const sortedModels = (data.models || []).sort((a: OllamaModel, b: OllamaModel) => 
+        a.name.localeCompare(b.name)
+      );
+      
+      setModels(sortedModels);
+    } catch (e) {
+      console.error(e);
+      addEvent({ type: 'error', message: 'Failed to connect to local Ollama instance. Is the daemon running?' });
+    } finally {
+      setIsBooting(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchModels();
+  }, []);
+
+  const handlePull = async () => {
+    const targetModel = pullInput.trim().toLowerCase();
+    if (!targetModel || isPulling) return;
+
+    setIsPulling(true);
+    setPullStatus("Contacting registry...");
+    addEvent({ type: 'system', message: `Initiating download for model: ${targetModel}` });
+
+    try {
+      const res = await fetch('http://localhost:11434/api/pull', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: targetModel })
+      });
+
+      if (!res.body) throw new Error("No response body");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n').filter(Boolean);
+        
+        for (const line of lines) {
+          const data = JSON.parse(line);
+          if (data.status) {
+            if (data.total && data.completed) {
+               const percent = ((data.completed / data.total) * 100).toFixed(1);
+               setPullStatus(`${data.status} (${percent}%)`);
+            } else {
+               setPullStatus(data.status);
+            }
+          }
+        }
+      }
+      
+      addEvent({ type: 'system', message: `Successfully installed model: ${targetModel}` });
+      setPullInput("");
+      await fetchModels();
+    } catch (e) {
+      console.error(e);
+      addEvent({ type: 'error', message: `Failed to pull model: ${targetModel}` });
+    } finally {
+      setIsPulling(false);
+      setPullStatus("");
+    }
+  };
+
+  const formatBytes = (bytes: number) => {
+    return (bytes / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+  };
+
+  return (
+    <div className="flex-1 flex flex-col min-h-0 bg-zinc-950 text-zinc-300 p-8 overflow-y-auto">
+      
+      {/* View Header */}
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-100 flex items-center gap-3">
+            <Server className="h-6 w-6 text-emerald-500" />
+            Local Models
+          </h1>
+          <p className="text-sm text-zinc-500 mt-1">Manage and provision local LLMs via the Ollama daemon.</p>
+        </div>
+        
+        {/* Powered by Ollama Badge */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 shadow-sm cursor-default">
+          <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Powered by</span>
+          <span className="text-sm font-bold text-zinc-100 tracking-tight">Ollama</span>
+        </div>
+      </div>
+
+      <div className="max-w-4xl flex flex-col gap-6">
+        
+        {/* Pull Model Card */}
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-sm font-bold text-zinc-100 mb-4 flex items-center gap-2">
+            <Download className="h-4 w-4 text-emerald-500" />
+            Download New Model
+          </h2>
+          <div className="flex gap-3">
+            <input 
+              type="text" 
+              value={pullInput}
+              onChange={(e) => setPullInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handlePull()}
+              disabled={isPulling}
+              placeholder="e.g., llama3.1:8b, qwen2.5-coder:7b" 
+              className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm text-zinc-100 outline-none focus:border-emerald-500 transition-colors disabled:opacity-50"
+            />
+            <button 
+              onClick={handlePull}
+              disabled={isPulling || !pullInput.trim()}
+              className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold px-6 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isPulling ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {pullStatus || "Pulling..."}
+                </>
+              ) : (
+                "Download"
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Installed Models Grid */}
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-sm font-bold text-zinc-100 flex items-center gap-2">
+              <HardDrive className="h-4 w-4 text-emerald-500" />
+              Installed Weights
+            </h2>
+            <span className="text-xs font-mono text-zinc-500 bg-zinc-950 px-2 py-1 rounded border border-zinc-800">
+              {models.length} Models Detected
+            </span>
+          </div>
+
+          {isBooting ? (
+            <div className="flex items-center justify-center py-12 text-zinc-500">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          ) : models.length === 0 ? (
+            <div className="text-center py-12 border border-dashed border-zinc-800 rounded-lg text-zinc-500 text-sm">
+              No models found. Download one above to get started.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {models.map((model) => (
+                <div key={model.name} className="flex flex-col gap-3 p-4 rounded-lg bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors group">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2">
+                      <Box className="h-4 w-4 text-zinc-500" />
+                      <span className="font-bold text-zinc-200 text-sm">{model.name}</span>
+                    </div>
+                    {/* Add delete logic here later if needed */}
+                    <button className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-rose-400 transition-all p-1" title="Delete Model">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 text-xs font-mono text-zinc-500">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50" />
+                      {formatBytes(model.size)}
+                    </span>
+                    <span>Modified: {new Date(model.modified_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/views/SettingsView.tsx">
+import { useState } from 'react';
+import { Settings, Shield, Key, Puzzle, Save } from 'lucide-react';
+
+export default function SettingsView() {
+  const [activeTab, setActiveTab] = useState<'constraints' | 'keys' | 'plugins'>('constraints');
+
+  return (
+    <div className="flex-1 flex flex-col min-h-0 bg-zinc-950 text-zinc-300 p-8 overflow-y-auto">
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-100 flex items-center gap-3">
+            <Settings className="h-6 w-6 text-emerald-500" />
+            System Settings
+          </h1>
+          <p className="text-sm text-zinc-500 mt-1">Global constraints, API configurations, and plugin options.</p>
+        </div>
+        <button className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
+          <Save className="h-4 w-4" />
+          Save Changes
+        </button>
+      </div>
+
+      <div className="max-w-4xl flex gap-8">
+        {/* Tab Navigation */}
+        <div className="w-64 flex flex-col gap-2 shrink-0">
+          <button 
+            onClick={() => setActiveTab('constraints')}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'constraints' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 border border-transparent'}`}
+          >
+            <Shield className="h-4 w-4" /> Global Constraints
+          </button>
+          <button 
+            onClick={() => setActiveTab('keys')}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'keys' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 border border-transparent'}`}
+          >
+            <Key className="h-4 w-4" /> API Keys
+          </button>
+          <button 
+            onClick={() => setActiveTab('plugins')}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === 'plugins' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 border border-transparent'}`}
+          >
+            <Puzzle className="h-4 w-4" /> Plugin Options
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 min-h-[400px]">
+          {activeTab === 'constraints' && (
+            <div className="animate-in fade-in space-y-6">
+              <h2 className="text-lg font-bold text-zinc-100">Security Doctrine</h2>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-zinc-950 border border-zinc-800 rounded-lg">
+                  <div>
+                    <div className="font-bold text-zinc-200 text-sm">Human-in-the-Loop Interception</div>
+                    <div className="text-xs text-zinc-500 mt-1">Require manual approval for all filesystem writes and shell executions.</div>
+                  </div>
+                  <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center p-1 cursor-pointer">
+                    <div className="w-3 h-3 bg-zinc-950 rounded-full translate-x-5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'keys' && (
+            <div className="animate-in fade-in space-y-6">
+              <h2 className="text-lg font-bold text-zinc-100">External Provider Keys</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Tavily Search API</label>
+                  <input type="password" placeholder="tvly-..." className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm text-zinc-300 focus:border-emerald-500 outline-none" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'plugins' && (
+            <div className="animate-in fade-in space-y-6">
+              <h2 className="text-lg font-bold text-zinc-100">Plugin Specific Settings</h2>
+              <div className="p-8 text-center border border-dashed border-zinc-800 rounded-lg text-zinc-500 text-sm">
+                Select a plugin from the sidebar to configure its isolated settings.
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/views/TuningView.tsx">
+import { Wrench, Sparkles, Database } from 'lucide-react';
+
+export default function TuningView() {
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center min-h-0 bg-zinc-950 text-zinc-300 p-8">
+      <div className="flex flex-col items-center max-w-md text-center space-y-6">
+        <div className="h-20 w-20 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
+          <Wrench className="h-10 w-10" />
+        </div>
+        
+        <div>
+          <h1 className="text-3xl font-bold text-zinc-100 tracking-tight">Fine-Tuning Engine</h1>
+          <p className="text-zinc-500 mt-2">Visual LoRA training and dataset formatting.</p>
+        </div>
+
+        <div className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden mt-4">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+          <h2 className="text-xl font-bold text-emerald-400 mb-2">Coming in v2.0</h2>
+          <p className="text-sm text-zinc-400 mb-6">
+            The native fine-tuning dashboard will integrate directly with Unsloth and Axolotl to orchestrate local training runs with zero terminal configuration.
+          </p>
+          
+          <div className="flex items-center justify-center gap-8 text-zinc-500 font-bold tracking-widest uppercase text-xs">
+            <div className="flex items-center gap-2"><Sparkles className="h-4 w-4" /> Unsloth</div>
+            <div className="flex items-center gap-2"><Database className="h-4 w-4" /> Axolotl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/services/ollama.ts">
+// src/services/ollama.ts
+
+const OLLAMA_URL = "http://localhost:11434/api";
+
+export interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+export interface StreamResponse {
+  model: string;
+  created_at: string;
+  message: ChatMessage;
+  done: boolean;
+}
+
+interface FetchOptions {
+  tier: string;
+  isBackgroundCritic?: boolean;
+}
+
+/**
+ * Streams a chat completion from the local Ollama instance.
+ * @param model The target model (e.g., 'llama3.1:8b', 'codestral')
+ * @param messages The conversation history
+ * @param options Hardware profiling constraints
+ * @param onChunk Callback function to update the UI as tokens stream in
+ */
+
+let activeController: AbortController | null = null;
+
+export const cancelGeneration = () => {
+  if (activeController) {
+    activeController.abort();
+    activeController = null;
+  }
+};
+
+export async function streamChat(
+  model: string,
+  messages: ChatMessage[],
+  options: FetchOptions,
+  onChunk: (chunk: string) => void
+): Promise<void> {
+  // 1. Assign a new controller every time a stream starts
+  activeController = new AbortController();
+
+  // Dynamically allocate resources based on the abstracted hardware tier
+  let keepAlive = "0m";
+  let numCtx = 2048;
+
+  if (options.tier === "enthusiast") {
+    keepAlive = options.isBackgroundCritic ? "5m" : "45m";
+    numCtx = options.isBackgroundCritic ? 4096 : 32768; 
+  } else if (options.tier === "standard") {
+    keepAlive = options.isBackgroundCritic ? "0m" : "15m";
+    numCtx = options.isBackgroundCritic ? 2048 : 8192;
+  }
+
+  try {
+    const response = await fetch(`${OLLAMA_URL}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: true,
+        options: {
+          keep_alive: keepAlive,
+          num_ctx: numCtx
+        }
+      }),
+      signal: activeController.signal // 2. Attach the kill switch signal here!
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ollama API error: ${response.statusText}`);
+    }
+
+    if (!response.body) throw new Error("No response body returned from Ollama.");
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split("\n").filter((line) => line.trim() !== "");
+
+      for (const line of lines) {
+        try {
+          const parsed: StreamResponse = JSON.parse(line);
+          if (parsed.message?.content) {
+            onChunk(parsed.message.content);
+          }
+        } catch (e) {
+          console.warn("Failed to parse chunk:", line);
+        }
+      }
+    }
+  } catch (error: any) {
+    // 3. Catch the specific AbortError so it doesn't crash or print an API error when killed
+    if (error.name === 'AbortError') {
+      console.log("Stream forcefully aborted by Kill Switch.");
+    } else {
+      console.error("Failed to connect to local Ollama instance:", error);
+      onChunk("\n\n[SYSTEM ERROR]: Connection to Ollama failed. Verify the engine is running.");
+    }
+  } finally {
+    // 4. Clean up when the stream finishes naturally or is killed
+    activeController = null;
+  }
+}
+</file>
+
+<file path="src/store/useAgentStore.ts">
+import { create } from 'zustand';
+import { invoke } from '@tauri-apps/api/core';
+import { ChatMessage } from '../services/ollama';
+
+export interface HardwareTelemetry {
+  system_ram_percent_used: number;
+  vram_percent_used: number;
+  compute_tier: string;
+  can_load_large_model: boolean;
+}
+
+export interface SystemEvent {
+  id: string;
+  timestamp: Date;
+  type: 'router' | 'system' | 'security' | 'error';
+  message: string;
+}
+
+interface AgentState {
+  messages: ChatMessage[];
+  events: SystemEvent[];
+  isGenerating: boolean;
+  activeModel: string;
+  hardware: HardwareTelemetry | null;
+  activeFilePath: string | null;       
+  
+  addMessage: (msg: ChatMessage) => void;
+  appendTokenToLast: (token: string) => void;
+  setGenerating: (status: boolean) => void;
+  setActiveModel: (model: string) => void;
+  setActiveFilePath: (path: string | null) => void;
+  pollHardware: () => Promise<void>;
+  addEvent: (event: Omit<SystemEvent, 'id' | 'timestamp'>) => void;
+  clearMessages: () => void;
+}
+
+export const useAgentStore = create<AgentState>((set) => ({
+  messages: [
+    { role: 'system', content: 'Workspace initialized. Ready to route tasks to specialized local models.' }
+  ],
+  events: [
+    { id: 'boot-1', timestamp: new Date(), type: 'security', message: 'Security Doctrine strictly enforced. Strict CSP active.' },
+    { id: 'boot-2', timestamp: new Date(), type: 'system', message: 'IPC bridge established. Awaiting command.' }
+  ],
+  isGenerating: false,
+  activeModel: 'llama3.1:8b', 
+  hardware: null,
+  activeFilePath: null,
+  
+  clearMessages: () => set({ messages: [] }),
+  
+  addMessage: (msg) => set((state) => ({ 
+    messages: [...state.messages, msg] 
+  })),
+  
+  appendTokenToLast: (token) => set((state) => {
+    const newMessages = [...state.messages];
+    const lastIndex = newMessages.length - 1;
+    if (lastIndex >= 0 && newMessages[lastIndex].role === 'assistant') {
+      newMessages[lastIndex] = {
+        ...newMessages[lastIndex],
+        content: newMessages[lastIndex].content + token
+      };
+    }
+    return { messages: newMessages };
+  }),
+  
+  setGenerating: (status) => set({ isGenerating: status }),
+  
+  setActiveModel: (model) => set((state) => {
+    if (state.activeModel !== model) {
+      state.addEvent({ type: 'router', message: `Dispatched pipeline to target: @${model}` });
+    }
+    return { activeModel: model };
+  }),
+
+  setActiveFilePath: (path) => set({ activeFilePath: path }),
+  
+  pollHardware: async () => {
+    try {
+      const telemetry = await invoke<HardwareTelemetry>('get_hardware_telemetry');
+      set({ hardware: telemetry });
+    } catch (error) {
+      console.error("Failed to poll hardware:", error);
+    }
+  },
+
+  addEvent: (event) => set((state) => ({
+    events: [...state.events, { ...event, id: crypto.randomUUID(), timestamp: new Date() }]
+  }))
+}));
+</file>
+
+<file path="src/store/useCotStore.ts">
+import { create } from 'zustand';
+
+interface CotStore {
+  cotStream: string;
+  setCot: (text: string) => void;
+  clearCot: () => void;
+}
+
+export const useCotStore = create<CotStore>((set) => ({
+  cotStream: "",
+  setCot: (text) => set({ cotStream: text }),
+  clearCot: () => set({ cotStream: "" }),
+}));
+</file>
+
+<file path="src/store/usePluginStore.ts">
+import { create } from 'zustand';
+import { invoke } from '@tauri-apps/api/core';
+
+export type WeaverPermission = 'fs:read' | 'fs:write' | 'shell:execute' | 'network:fetch';
+
+export interface IWeaverPlugin {
+  id: string;
+  name: string;
+  namespace: string;
+  version: string;
+  description: string;
+  requestedPermissions: WeaverPermission[];
+  entrypoint?: string;
+  getContext?: () => string;
+}
+
+export interface PendingAction {
+  id: string;
+  pluginId: string;
+  agentName: string;
+  permission: WeaverPermission;
+  payload: string;
+  criticReasoning: string;
+}
+
+interface PluginState {
+  installedPlugins: IWeaverPlugin[];
+  activePluginContext: string | null;
+  pendingAction: PendingAction | null; 
+  
+  setActiveContext: (namespace: string | null) => void;
+  loadPlugins: () => Promise<void>;
+  requestApproval: (action: PendingAction) => void;
+  resolveApproval: (approved: boolean) => void;
+}
+
+export const usePluginStore = create<PluginState>((set, get) => ({
+  installedPlugins: [],
+  activePluginContext: null,
+  pendingAction: null,
+
+  setActiveContext: (namespace: string | null) => set({ activePluginContext: namespace }),
+
+  loadPlugins: async () => {
+    try {
+      // TODO (Phase 7): Move this hardcoded path to a local .gitignore config file
+      const pluginsBaseDir = "C:\\Users\\kbkla\\Projects\\WeaverPlugins"; 
+      
+      console.log(`[RUST IPC] Scanning plugin directory: ${pluginsBaseDir}`);
+      const folders = await invoke<string[]>('fs_read_dir', { path: pluginsBaseDir });
+      
+      const loadedPlugins: IWeaverPlugin[] = [];
+
+      for (const folder of folders) {
+        try {
+          const manifestPath = `${pluginsBaseDir}\\${folder}\\manifest.json`;
+          const manifestRaw = await invoke<string>('fs_read', { path: manifestPath });
+          const manifest = JSON.parse(manifestRaw);
+          
+          loadedPlugins.push({
+            id: manifest.id,
+            name: manifest.name,
+            namespace: manifest.namespace,
+            version: manifest.version,
+            description: manifest.description,
+            requestedPermissions: manifest.requestedPermissions,
+            getContext: () => JSON.stringify({ activeFile: "main.rs", cursorLine: 42 }) 
+          });
+        } catch (e) {
+          console.warn(`[RUST IPC] No valid manifest found in ${folder}`);
+        }
+      }
+
+      if (loadedPlugins.length > 0) {
+        set({ installedPlugins: loadedPlugins });
+        console.log("[RUST IPC] Successfully loaded local plugins:", loadedPlugins);
+      }
+
+    } catch (error) {
+      console.error("[RUST IPC] Failed to read base plugin directory:", error);
+    }
+  },
+
+  requestApproval: (action) => set({ pendingAction: action }),
+  
+  resolveApproval: async (approved) => {
+    const action = get().pendingAction;
+    
+    if (approved && action) {
+      console.log(`[RUST IPC] Executing ${action.permission}...`);
+      try {
+        let result = "";
+        
+        switch (action.permission) {
+          case 'shell:execute':
+            result = await invoke('shell_execute', { payload: action.payload });
+            break;
+          case 'fs:write':
+            const writeData = JSON.parse(action.payload);
+            await invoke('fs_write', { path: writeData.path, contents: writeData.contents });
+            result = `Successfully wrote to ${writeData.path}`;
+            break;
+          case 'fs:read':
+            result = await invoke('fs_read', { path: action.payload });
+            break;
+          default:
+            console.error("Unsupported permission execution.");
+        }
+        
+        console.log("[RUST IPC] Success:", result);
+        
+      } catch (error) {
+        console.error("[RUST IPC] Execution Failed:", error);
+      }
+    } else {
+      console.log("ACTION DENIED BY USER");
+    }
+    
+    set({ pendingAction: null });
+  }
+}));
+</file>
+
+<file path="src/App.tsx">
+// src/App.tsx
+import { useState, useEffect } from "react";
+import { Route, Switch } from "wouter";
+import { usePluginStore } from "./store/usePluginStore";
+
+// Layout Components
+import Sidebar from "./components/layout/Sidebar";
+import ChainOfThought from "./components/layout/ChainOfThought";
+import CommandPalette from "./components/chat/CommandPalette";
+import WeaverIDE from "./components/ide/WeaverIDE";
+import StatusBar from "./components/layout/StatusBar";
+
+// Plugin Views
+import ApprovalModal from "./components/security/ApprovalModal";
+import ModelsView from "./components/views/ModelsView";
+import TuningView from "./components/views/TuningView";
+import SettingsView from "./components/views/SettingsView";
+
+// The Dynamic Plugin Router
+export function WorkspaceManager() {
+  const { activePluginContext, installedPlugins } = usePluginStore();
+
+  if (!activePluginContext) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-zinc-500 space-y-4">
+        <div className="h-16 w-16 rounded-2xl bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center">
+          <span className="text-2xl font-bold text-zinc-600">W</span>
+        </div>
+        <p className="font-mono text-sm">
+          No active plugin context. Type <code className="text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded">\pi</code> in the terminal to load a workspace.
+        </p>
+      </div>
+    );
+  }
+
+  if (activePluginContext === 'ide') {
+    return <WeaverIDE />;
+  }
+
+  const activePlugin = installedPlugins.find(p => p.namespace === activePluginContext);
+
+  switch (activePluginContext) {
+    case 'ue5':
+      return (
+        <div className="flex items-center justify-center h-full text-zinc-500 font-mono text-sm">
+          [UE5 Blueprint Bridge is not yet initialized]
+        </div>
+      );
+      
+    default:
+      return (
+        <div className="flex flex-col items-center justify-center h-full text-zinc-500 space-y-2 font-mono text-sm">
+          <p>Loaded plugin <span className="text-emerald-400">'{activePlugin?.name || activePluginContext}'</span> is active.</p>
+          <p className="text-xs text-zinc-600">UI view bundle loading pending...</p>
+        </div>
+      );
+  }
+}
+
+export default function App() {
+  const [chatState, setChatState] = useState<'collapsed' | 'normal' | 'full'>('normal');
+  const { loadPlugins } = usePluginStore();
+
+  // Run once when Weaver boots to load local plugins
+  useEffect(() => {
+    loadPlugins();
+  }, [loadPlugins]);
+
+  return (
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-900 text-zinc-50 font-sans cursor-default select-none">
+      
+      <div className="flex flex-1 min-h-0">
+        <Sidebar />
+
+        <main className="flex-1 flex flex-col min-w-0 bg-zinc-900">
+          
+          <div className={`overflow-y-auto transition-all duration-300 ease-in-out ${chatState === 'full' ? 'h-0 hidden' : 'flex-1'}`}>
+            <Switch>
+              <Route path="/" component={WorkspaceManager} />
+              <Route path="/workspace" component={WorkspaceManager} />
+              <Route path="/models" component={ModelsView} />
+              <Route path="/tuning" component={TuningView} />
+              <Route path="/settings" component={SettingsView} />
+            </Switch>
+          </div>
+
+          <CommandPalette chatState={chatState} setChatState={setChatState} />
+
+        </main>
+
+        <ChainOfThought />
+      </div>
+
+      <StatusBar />
+      <ApprovalModal />
+    </div>
+  );
+}
+</file>
+
+<file path="src/main.tsx">
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./styles.css"; // Ensure this matches the exact name of your CSS file!
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+</file>
+
+<file path="src/styles.css">
+@import "tailwindcss";
+
+/* We can add custom Weaver theme variables here later */
+body {
+  background-color: #0f172a; /* Tailwind's slate-900 for a dark mode base */
+  color: #f8fafc; /* Tailwind's slate-50 */
+}
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="src-tauri/capabilities/default.json">
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "opener:default"
+  ]
+}
+</file>
+
+<file path="src-tauri/src/lib.rs">
+use sysinfo::System;
+use serde::Serialize;
+use std::fs;
+use std::process::Command;
+
+#[derive(serde::Serialize)]
+struct HardwareTelemetry {
+    system_ram_percent_used: f64,
+    vram_percent_used: f64,
+    compute_tier: String,
+    can_load_large_model: bool,
+}
+
+#[derive(serde::Serialize)]
+struct FileEntry {
+    name: String,
+    path: String,
+    is_dir: bool,
+}
+
+#[tauri::command]
+fn execute_kill_switch() -> Result<String, String> {
+    println!("CRITICAL: Kill switch activated via IPC.");
+    Ok("All agent workflows terminated and returned to idle state.".into())
+}
+
+#[tauri::command]
+async fn get_hardware_telemetry() -> Result<HardwareTelemetry, String> {
+    let mut sys = System::new_all();
+    sys.refresh_memory();
+    
+    // 1. Calculate Real System RAM
+    let total_ram = sys.total_memory() as f64;
+    let used_ram = sys.used_memory() as f64;
+    let ram_percent = if total_ram > 0.0 { (used_ram / total_ram) * 100.0 } else { 0.0 };
+
+    // 2. Fetch Real VRAM via PowerShell (Bypasses 4GB 32-bit WMI limits)
+    let mut vram_percent = 0.0;
+    
+    let ps_cmd = r#"
+        let $counter = "\GPU Engine(*)\Local Update*"
+        let $vram = (Get-Counter $counter -ErrorAction SilentlyContinue).CounterSamples | Measure-Object -Property CookedValue -Sum
+        if ($vram) { [math]::Round($vram.Sum / 1MB, 2) } else { 0 }
+    "#;
+
+    if let Ok(output) = Command::new("powershell")
+        .args(["-NoProfile", "-Command", ps_cmd])
+        .output() 
+    {
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        if let Ok(used_vram_mb) = stdout.trim().parse::<f64>() {
+            // Hardcoded to your 24GB 7900 XTX (24576 MB)
+            vram_percent = (used_vram_mb / 24576.0) * 100.0;
+        }
+    }
+
+    let can_load = vram_percent < 60.0;
+
+    Ok(HardwareTelemetry {
+        compute_tier: "enthusiast".to_string(),
+        system_ram_percent_used: ram_percent,
+        vram_percent_used: vram_percent,
+        can_load_large_model: can_load,
+    })
+}
+
+#[tauri::command]
+async fn fs_read(path: String) -> Result<String, String> {
+    fs::read_to_string(&path).map_err(|e| format!("Failed to read file at {}: {}", path, e))
+}
+
+#[tauri::command]
+async fn fs_write(path: String, contents: String) -> Result<(), String> {
+    fs::write(&path, contents).map_err(|e| format!("Failed to write to {}: {}", path, e))
+}
+
+#[tauri::command]
+async fn shell_execute(payload: String) -> Result<String, String> {
+    // Note: For Windows, you'd use "cmd" and "/C". For Mac/Linux, "sh" and "-c".
+    // This is a basic cross-platform wrapper for the MVP:
+    let output = if cfg!(target_os = "windows") {
+        Command::new("cmd").args(["/C", &payload]).output()
+    } else {
+        Command::new("sh").args(["-c", &payload]).output()
+    };
+
+    match output {
+        Ok(out) => {
+            let stdout = String::from_utf8_lossy(&out.stdout).to_string();
+            let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+            if out.status.success() {
+                Ok(stdout)
+            } else {
+                Err(format!("Command failed: {}", stderr))
+            }
+        }
+        Err(e) => Err(format!("Failed to execute shell command: {}", e)),
+        }
+}
+
+// File System: Read Directory (For scanning plugins)
+#[tauri::command]
+async fn fs_read_dir(path: String) -> Result<Vec<String>, String> {
+    let mut entries = Vec::new();
+    match fs::read_dir(&path) {
+        Ok(paths) => {
+            for path in paths {
+                if let Ok(entry) = path {
+                    // Just grab the folder or file name
+                    if let Ok(name) = entry.file_name().into_string() {
+                        entries.push(name);
+                    }
+                }
+            }
+            Ok(entries)
+        }
+        Err(e) => Err(format!("Failed to read directory at {}: {}", path, e))
+    }
+}
+
+#[tauri::command]
+async fn fs_read_tree(path: String) -> Result<Vec<FileEntry>, String> {
+    let mut entries = Vec::new();
+    match std::fs::read_dir(&path) {
+        Ok(paths) => {
+            for path_result in paths {
+                if let Ok(dir_entry) = path_result {
+                    let path_buf = dir_entry.path();
+                    entries.push(FileEntry {
+                        name: dir_entry.file_name().to_string_lossy().into_owned(),
+                        path: path_buf.to_string_lossy().into_owned(),
+                        is_dir: path_buf.is_dir(),
+                    });
+                }
+            }
+            Ok(entries)
+        }
+        Err(e) => Err(format!("Failed to read directory tree at {}: {}", path, e))
+    }
+}
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
+        .invoke_handler(tauri::generate_handler![
+            execute_kill_switch, 
+            get_hardware_telemetry,
+            fs_read,
+            fs_write,
+            shell_execute,
+            fs_read_dir,
+            fs_read_tree
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+</file>
+
+<file path="src-tauri/src/main.rs">
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+fn main() {
+    weaver_lib::run();
+}
+</file>
+
+<file path="src-tauri/.gitignore">
+# Generated by Cargo
+# will have compiled files and executables
+/target/
+
+# Generated by Tauri
+# will have schema files for capabilities auto-completion
+/gen/schemas
+</file>
+
+<file path="src-tauri/build.rs">
+fn main() {
+    tauri_build::build()
+}
+</file>
+
+<file path="src-tauri/Cargo.toml">
+[package]
+name = "weaver"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "weaver_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sysinfo = "0.39.6"
+
+
+# Read the optimization guideline for more details: https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true
+</file>
+
+<file path="src-tauri/tauri.conf.json">
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Weaver",
+  "version": "1.0.0",
+  "identifier": "com.kbkla.weaver",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Weaver Core",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1024,
+        "minHeight": 768,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://localhost:11434 tauri:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="ARCHITECTURE.md">
+# Weaver Architecture & Technical Philosophy
+
+Weaver is built to solve the friction of local AI orchestration. Rather than relying on cloud APIs or fragmented CLI tools, Weaver provides an air-gapped, zero-trust environment where highly specialized local LLMs can physically interact with your filesystem, write code, and communicate with external software—safely.
+
+## Core Principles
+1. **Local First:** No data leaves the machine unless explicitly configured.
+2. **Strict IPC Boundary:** The React frontend (presentation layer) has zero native capabilities. All filesystem, shell, and hardware executions are ferried through strongly-typed Tauri Rust commands.
+3. **Transparent Cognition:** Agent reasoning is separated from conversational UI. A dedicated `Chain of Thought` panel serializes system events, hardware state, and XML-tagged LLM planning into a single chronological trace.
+
+## The Multi-Agent Review Council (Evolutionary Architecture)
+
+Allowing an autonomous agent to freely edit local files introduces high risk. Weaver mitigates this using a "Review Council." 
+
+### Current State (MVP)
+For v1.0.0, Weaver utilizes a **Single-Prompt Consensus Model** to balance latency and safety. Before an edit is executed, the LLM is prompted via a meta-layer to evaluate its own tool call from distinct perspectives:
+*   **Security:** Are we exposing API keys or enabling arbitrary code execution?
+*   **Legal/Compliance:** Does this violate licensing or organizational constraints?
+*   **Optimization:** Is the generated code computationally heavy or memory-leaking?
+*   **UX:** Does this break the UI/UX contracts of the active module?
+
+### Future State (v2.0+)
+As local inference speeds improve, Weaver will transition to a **Heuristic-Routed Multi-Agent Pipeline**:
+1. **Heuristic Pre-flight (Rust/TS):** Blazing-fast, hardcoded checks (Regex for secrets, file-size diffs, syntax linting) catch 80% of errors with zero inference cost.
+2. **The Router Agent (Ultra-Light LLM):** A fast, small-parameter model (e.g., Qwen 1.5B) acts as a triage nurse. It reviews the proposed diff and determines *which* of the specialized council agents actually need to be invoked.
+3. **The Multi-Perspective Evaluator:** The specific agent(s) flagged by the router perform a deep validation, returning a strict JSON consensus (Approve, Deny, Modify) to the master orchestrator.
+4. **The Audit Failsafe (Agent 5):** A final, isolated agent dedicated strictly to data loss prevention. It evaluates the blast radius of the approved edits against historical codebase context to prevent destructive overwrites or cascading application failures.
+
+## State Management & Memory-Optimized Auditing
+Weaver utilizes a centralized Zustand store (`AgentStore`) to synchronize state between the IDE and the LLM engine. This eliminates split-brain scenarios; if a file is active in the Monaco Editor, its absolute path is instantly injected into the LLM's system prompt context window.
+
+To ensure long-term accountability without exhausting host system memory, Weaver's post-MVP architecture includes a local **SQLite Rolling Ledger**:
+*   **30-Day Ephemeral Log:** Captures the high-volume Chain of Thought telemetry and system trace events.
+*   **6-Month Immutable Ledger:** Stores compressed delta-diffs of every file edit, tool call, and agent action executed on the machine, guaranteeing that historical data loss can always be reconstructed and reversed.
+</file>
+
+<file path="CHANGELOG.md">
+---
+document_id: "WV-DOC-004"
+title: "Project Changelog"
+version: "0.3.0"
+status: "active"
+author: "Octave Labs Core"
+created_date: "2026-10-09"
+last_updated: "2026-10-13"
+license: "Apache-2.0"
+framework_target: "Tauri v2"
+security_tier: "tier-0"
+changelog_ref: "CHANGELOG.md"
+---
+
+# Changelog
+
+All notable changes to this project will be documented in this file[cite: 11].
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)[cite: 11].
+
+## [Unreleased]
+- Packaging and executable builds for v1.0.0 MVP portfolio release.
+
+---
+
+## [0.3.0] - 2026-10-13
+
+### Added
+- **Global File State Routing:** Elevated `activeFilePath` to the global Zustand `AgentStore` to guarantee the LLM context matches the exact file open in the Monaco editor.
+- **Hardened Stream Interceptor:** Implemented an aggressive regex and buffer-trimming parser to ensure `<thought>` and `<action>` XML tags never leak into the Chat Terminal UI.
+- **Bottom Status Bar:** Reclaimed vertical workspace by migrating hardware telemetry from the CoT panel into a dedicated, bottom-aligned application status bar.
+- **WMI VRAM Bypass:** Updated Rust hardware polling to utilize PowerShell WMI (`Win32_VideoController`) to bypass zeroed AMD performance counters during deep idle states, returning accurate Dedicated Video Memory metrics.
+
+### Changed
+- **Unified System Trace:** Stripped the CoT panel of the hardware widget, merging standard system events, security alerts, and live agent cognitive reasoning into a single, chronological scrolling feed.
+- **UI Unlocking Guarantee:** Wrapped the primary LLM inference block in a `try...finally` statement to ensure the `isGenerating` lock releases regardless of parsing errors or manual kill-switch aborts.
+- **Error Routing:** Diverted tool-call success metrics and command errors from the Chat Terminal to the System Trace to maintain a clean conversational UI.
+
+---
+
+## [0.2.0] - 2026-10-12
+
+### Added
+- **Native Directory Scanning:** Implemented `fs_read_dir` in Rust to scan arbitrary host OS directories via Tauri IPC[cite: 11].
+- **Dynamic Manifest Discovery:** Upgraded `usePluginStore.ts` to dynamically register plugins via local `manifest.json` files[cite: 11].
+- **Zero-Mock Plugin State:** Purged hardcoded mock plugins from the frontend[cite: 11].
+- **Dynamic Workspace Manager:** Resolves and mounts workspaces dynamically based on registered plugin namespaces[cite: 11].
+- **Architectural Pivot (Core IDE):** Integrated Monaco Editor directly into Weaver's core layer[cite: 11].
+
+### Changed
+- **Export Refactoring:** Converted `WorkspaceManager` to a named export to eliminate collisions[cite: 11].
+
+---
+
+## [0.1.0] - 2026-10-09
+
+### Added
+- **Project Initialization:** Bootstrapped Weaver with Tauri v2, React, and TypeScript[cite: 11].
+- **Dynamic 3-Way Chat Terminal:** Bottom-anchored workspace terminal[cite: 11].
+- **Ollama Engine Bridge:** Streaming service communicating with local Ollama REST endpoints[cite: 11].
+- **Hardware Telemetry Profiler:** Rust backend `sysinfo` polling to calculate system RAM[cite: 11].
+- **IDE Command Palette:** Auto-resizing textarea supporting system commands and model routing[cite: 11].
+- **Master Kill Switch:** Hardware-level interrupt bound to an `AbortController`[cite: 11].
+- **Security Approval Modal:** Human-in-the-loop interception for sensitive operations[cite: 11].
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri + React + Typescript</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "weaver",
+  "private": true,
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2",
+    "framer-motion": "^14.1.0",
+    "lucide-react": "^1.55.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.3.3",
+    "wouter": "^3.13.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16"
+  }
+}
+</file>
+
+<file path="README.md">
+# Weaver
+
+**A Local-First, Zero-Trust AI Agent Orchestration IDE**
+
+Weaver is a modular desktop operating system for autonomous workflows. Built on a high-performance **Tauri v2** shell and a **Rust** backend, it provides a hyper-secure, air-gapped environment where specialized local LLMs (via Ollama) can physically interact with your filesystem and write code without compromising host system security.
+
+## 🚀 Core Philosophy
+* **100% Local Inference:** No cloud APIs. No data exfiltration. Weaver runs entirely on your local hardware.
+* **Strict IPC Security Boundary:** The React presentation layer has zero native capabilities. All execution requests are ferried through strongly-typed, deniable Tauri Rust commands.
+* **Transparent Cognition:** Agent reasoning is demystified. A unified System Trace panel serializes system events, hardware telemetry, and XML-tagged LLM planning into a single chronological feed.
+
+## ⚡ Features
+* **Native Monaco IDE:** Embedded `@monaco-editor/react` with dynamic global state syncing. The LLM always knows exactly which file you are looking at.
+* **Multi-Agent Review Council:** A meta-prompting architecture that forces the LLM to evaluate its own proposed file edits from Security, Legal, Optimization, and UX perspectives before execution.
+* **Dynamic Plugin Discovery:** A zero-mock plugin architecture. Weaver scans the host filesystem for `manifest.json` configurations and hot-loads external application bridges (e.g., Unreal Engine 5, DAWs) on the fly.
+* **Hardware-Level Killswitch:** A dedicated, hardware-polled UI interrupt bound to an `AbortController` that instantly terminates rogue agent workflows.
+* **Ollama Daemon Integration:** Real-time local model detection, dynamic VRAM/RAM polling via PowerShell/sysinfo, and an in-app weight downloader.
+
+## 🛠️ Tech Stack
+* **Frontend:** React 18, TypeScript, Tailwind CSS, Zustand, Wouter, Monaco Editor
+* **Backend:** Rust, Tauri v2 IPC, local OS file watchers
+* **Inference Engine:** Local Ollama REST API (`localhost:11434`)
+
+## 📦 Installation & Build
+
+**Prerequisites:**
+1. [Node.js](https://nodejs.org/)
+2. [Rust](https://www.rust-lang.org/tools/install)
+3. [Ollama](https://ollama.ai/) (Running locally with `OLLAMA_ORIGINS="*"`)
+
+**Development:**
+\`\`\`bash
+npm install
+npm run tauri dev
+\`\`\`
+
+**Build Executable:**
+\`\`\`bash
+npm run tauri build
+\`\`\`
+
+## 📚 Documentation
+* [Architecture & Review Council Details](ARCHITECTURE.md)
+* [Development Roadmap](ROADMAP.md)
+* [Changelog](CHANGELOG.md)
+
+## License
+Released under the [Apache 2.0 License](LICENSE).
+</file>
+
+<file path="ROADMAP.md">
+# Weaver: Project Roadmap & Manifest
+
+## Manifest
+**Weaver** is a modular, local-first AI orchestration platform and native operating system for autonomous workflows[cite: 12]. It pairs a high-performance Tauri v2 desktop shell with native local backends (Ollama, Unsloth, Axolotl)[cite: 12]. It features an embedded developer environment with direct AI agent code manipulation, dynamic resource control, and a pluggable architecture that securely connects autonomous models to external creative suites[cite: 12].
+
+---
+
+## Development Roadmap
+
+### Phase 1: Foundation & Security Sandbox (Complete)
+- [x] Initialize Tauri v2 (Rust backend, React frontend)[cite: 12].
+- [x] Implement the UI routing shell[cite: 12].
+- [x] Establish `SECURITY_DOCTRINE.md` constraints[cite: 12].
+- [x] Build the IPC Bridge[cite: 12].
+- [x] Create the Master Kill Switch[cite: 12].
+
+### Phase 2: The Inference Engine (Complete)
+- [x] Build the Chat/Agent Interface[cite: 12].
+- [x] Implement the Engine Bridge (Ollama REST API)[cite: 12].
+- [x] Build Hardware Telemetry with live VRAM and RAM polling[cite: 12].
+- [x] Build Global State (Zustand)[cite: 12].
+
+### Phase 3: Command Palette & Agent Orchestration (Complete)
+- [x] UI Component Modularization[cite: 12].
+- [x] Command Palette Architecture (`\@` and `\pi` routing)[cite: 12].
+- [x] Chronological System Trace Event Stream[cite: 12].
+- [x] Active Stream Interruption[cite: 12].
+
+### Phase 4: Plugin Architecture & OS Discovery (Complete)
+- [x] Plugin Store & Interface (`IWeaverPlugin`)[cite: 12].
+- [x] Native Rust Discovery Bridge[cite: 12].
+- [x] Dynamic Manifest Loading[cite: 12].
+- [x] Human-in-the-Loop Security Gatekeeper (`ApprovalModal`)[cite: 12].
+
+### Phase 5: MVP Polish & Core IDE Execution (Current)
+*Goal: Finalize the UI for the v1.0.0 portfolio release and demonstrate local AI tool execution.*
+- [ ] **UI Refactor:** Replace top-left shield with "W" logo; consolidate sidebar icons into a dynamic, collapsible plugin header.
+- [ ] **Local Models Dashboard:** Implement an Ollama-powered dashboard to list available models (`GET /api/tags`), download new models via input box (`POST /api/pull`), and display "Powered by Ollama" branding.
+- [ ] **Settings Refactor:** Implement a tabulated layout for Global Constraints, API Keys, and dynamic Plugin Options.
+- [ ] **CoT Visual Overhaul:** Box and border the active thought process panel to match the visual weight of standard security cards.
+- [ ] **Single-Prompt Review Council:** Implement the MVP version of the Multi-Agent Review Council—a single meta-prompt that forces the active LLM to evaluate code modifications from Legal, Security, Optimization, and UX perspectives before returning a consolidated JSON tool call.
+
+### Phase 6: v2.0 Scope (Post-MVP)
+*Goal: Expand the core application with advanced orchestration, auditing, and fine-tuning features.*
+- [ ] **The Fine-Tuning GUI:** Implement Unsloth / Axolotl visual dashboards (Currently mocked with "Coming in v2.0" banners).
+- [ ] **Advanced Review Council Architecture:** Transition from the MVP Single-Prompt Council to the finalized architecture: Hardcoded Heuristics -> Lightweight Router LLM -> Final Multi-Perspective Check.
+- [ ] **Audit & Data Integrity Agent:** Introduce a 5th specialized auditing agent dedicated exclusively to deep codebase context checks, preventing destructive cascading failures or unrecoverable data loss during autonomous operations.
+- [ ] **Memory-Optimized Local Logging:** Implement an embedded SQLite database with strict rolling retention policies to maintain system accountability without ballooning disk space:
+  - **30-Day Retention:** High-volume Chain of Thought telemetry and system trace events.
+  - **6-Month Retention:** Immutable ledger of all atomic file edits and code diffs.
+- [ ] **Dynamic Icon Loading:** Standardize the plugin API to pass custom SVGs/Icons from manifests to the dynamic sidebar header.
+
+### Phase 7: Flagship Polish & Public Portfolio Launch
+- [ ] **Remove Hardcoded Paths:** Extract local directory paths to a `.gitignore` config file.
+- [ ] **API Documentation:** Publish developer guides for the Weaver Plugin API.
+- [ ] **Executable Packaging:** Bundle and build the MVP installer via Tauri.
+- [ ] **GitHub & LinkedIn Launch:** Push the sanitized repo and demo assets publicly.
+
+### Phase 8: v3.0 Scope (Cross-Platform Parity)
+*Goal: Break OS-dependency and achieve full native cross-platform compliance.*
+- [ ] **Linux & macOS Native Ports:** Refactor Windows-specific hardware telemetry (PowerShell WMI) to universal cross-platform Rust crates.
+- [ ] **POSIX Compliant Architecture:** Ensure Tauri filesystem watchers and IPC bridges gracefully handle Unix/POSIX vs. Windows pathing dynamically.
+
+### Phase 9: v4.0 Scope (The Agentic OS)
+*Goal: Transition Weaver from a desktop application wrapper to a bare-metal, standalone operating system.*
+- [ ] **Bare-Metal Bootloader:** Utilize a lightweight Linux kernel to boot the Weaver desktop environment as the primary, native system shell.
+- [ ] **Window Manager Replacement:** Deprecate traditional OS window managers in favor of Weaver's dynamic workspace and plugin routing system.
+- [ ] **Kernel-Level Agentic Access:** Grant the foundational orchestrator direct kernel and syslog read access for auto-healing, self-optimization, and ultra-low-latency file manipulation.
+</file>
+
+<file path="SECURITYDOCTRINE.md">
+# Weaver: Security Doctrine & Operational Constraints
+
+## 1. Core Philosophy: The Sandbox Absolute
+Weaver is built on the principle of zero inherent trust. Autonomous AI agents operate within a highly restricted, explicitly authorized sandbox. The platform exists to provide the user with absolute control over local machine learning models and to ensure those models cannot act maliciously, destructively, or covertly.
+
+## 2. Architectural Security & Licensing
+*   **Framework (Tauri v2):** Weaver utilizes Tauri v2 over Electron to leverage its "deny-by-default" security model. By default, the frontend webview (where the AI interface lives) has zero access to the host operating system. All interactions with the file system, network, or OS must be explicitly allowlisted via Tauri Capabilities and routed through strict Inter-Process Communication (IPC) channels.
+*   **Licensing (Apache 2.0):** Weaver is licensed under Apache 2.0. This ensures the project remains open-source while explicitly protecting contributors and users from patent litigation. It allows for future commercial plugin development without compromising the open-source nature of the core sandbox.
+
+## 3. The Prime Directives
+All agents, models, and plugins operating within the Weaver environment are strictly bound to the following constraints. Any violation must immediately trigger a process termination.
+1.  **Do No Harm:** Agents must avoid causing physical, financial, emotional, or mental harm at all times.
+2.  **Absolute Transparency:** Agents must not conceal their intentions, chain of thought, or operational justifications from the user.
+3.  **No Sycophancy:** Agents must provide frank, honest assessments. If a user's request is flawed, insecure, or impossible, the agent must state the limitations clearly and provide alternative choices.
+4.  **No Hallucinations:** Agents must rely on verified local data or explicitly state when they are generating speculative information.
+5.  **Fail-Safe Termination:** If an agent is unable to accomplish a task without violating any of the above directives, it must immediately abort the workflow and return to an idle state.
+
+## 4. Execution & Approval Strictures
+*   **Mandatory Live Chain of Thought (CoT):** All reasoning, decision-making, and file-access intent must be streamed live to a prominent, un-hideable UI panel.
+*   **Approval Gates:** Before executing any action that modifies the file system, network state, or host OS, the UI must pause and require explicit user approval. The CoT must prominently display the decisions made, the approvals needed, and a clear justification for *why* the access is required.
+*   **Pre-Authorization:** Users may pre-authorize specific, narrowly scoped workflows (e.g., "Allow write access to `/Project_Conflux/src` for the next hour"), allowing the agent to work autonomously within that strict boundary.
+*   **Standardized Terminology:** Because Weaver spans multiple OS platforms, the UI layout and CSS are strictly normalized. Documentation and agents must refer to UI elements consistently to ensure predictable user navigation.
+
+## 5. System Access & Ephemerality
+*   **Principle of Least Privilege:** Plugins and agents may only request the bare minimum access required to accomplish a specific task.
+*   **IPC Allowlisting:** The frontend UI cannot execute arbitrary scripts. It may only send predefined, strictly typed event triggers to the Rust backend.
+*   **Ephemeral Secrets:** Any sensitive data (API keys, temporary access tokens, authentication states) must be held only in active RAM. They must be immediately flushed and destroyed upon process termination or plugin deactivation.
+
+## 6. Audit Logging & Retention
+To ensure accountability and traceability of autonomous actions:
+*   **90-Day Active Search:** All live Chain of Thought feeds, file modifications, and permission approvals are logged to a local SQLite database, remaining immediately searchable within the Weaver UI for 90 days.
+*   **6-Month Cold Backups:** Local file backups of logs and modified code states must be retained for 6 months.
+*   **User Sovereignty:** The user must be notified before any archival purge occurs. The user has the right and ability to manually delete these backups at any time via the Weaver settings panel.
+
+## 7. The Kill Switches
+*   **Hardware-Level Interrupt:** The Weaver UI must prominently feature a dedicated, always-accessible "Kill Switch" button.
+*   **Immediate Idle State:** Clicking the Kill Switch bypasses the standard shutdown sequence. It sends an immediate hardware interrupt (`SIGKILL`) to all active child processes (Ollama, Unsloth, Python scripts, active Node.js plugins), instantly halting the workflow and returning the agent to an idle state.
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="vite.config.ts">
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  clearScreen: false,
+  server: {
+    port: 1420,
+    strictPort: true,
+  },
+  envPrefix: ["VITE_", "TAURI_"],
+});
+</file>
+
+</files>

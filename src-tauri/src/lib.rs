@@ -1,7 +1,7 @@
-use sysinfo::System;
 use serde::Serialize;
 use std::fs;
 use std::process::Command;
+use sysinfo::System;
 
 #[derive(serde::Serialize)]
 struct HardwareTelemetry {
@@ -28,15 +28,19 @@ fn execute_kill_switch() -> Result<String, String> {
 async fn get_hardware_telemetry() -> Result<HardwareTelemetry, String> {
     let mut sys = System::new_all();
     sys.refresh_memory();
-    
+
     // 1. Calculate Real System RAM
     let total_ram = sys.total_memory() as f64;
     let used_ram = sys.used_memory() as f64;
-    let ram_percent = if total_ram > 0.0 { (used_ram / total_ram) * 100.0 } else { 0.0 };
+    let ram_percent = if total_ram > 0.0 {
+        (used_ram / total_ram) * 100.0
+    } else {
+        0.0
+    };
 
     // 2. Fetch Real VRAM via PowerShell (Bypasses 4GB 32-bit WMI limits)
     let mut vram_percent = 0.0;
-    
+
     let ps_cmd = r#"
         let $counter = "\GPU Engine(*)\Local Update*"
         let $vram = (Get-Counter $counter -ErrorAction SilentlyContinue).CounterSamples | Measure-Object -Property CookedValue -Sum
@@ -45,7 +49,7 @@ async fn get_hardware_telemetry() -> Result<HardwareTelemetry, String> {
 
     if let Ok(output) = Command::new("powershell")
         .args(["-NoProfile", "-Command", ps_cmd])
-        .output() 
+        .output()
     {
         let stdout = String::from_utf8_lossy(&output.stdout);
         if let Ok(used_vram_mb) = stdout.trim().parse::<f64>() {
@@ -62,6 +66,16 @@ async fn get_hardware_telemetry() -> Result<HardwareTelemetry, String> {
         vram_percent_used: vram_percent,
         can_load_large_model: can_load,
     })
+}
+
+#[tauri::command]
+async fn pick_workspace_dialog() -> Result<Option<String>, String> {
+    let folder = FileDialog::new()
+        .set_title("Open Workspace")
+        .pick_folder();
+        
+    // Convert the PathBuf to a String for the frontend, or return None if cancelled
+    Ok(folder.map(|path| path.to_string_lossy().into_owned()))
 }
 
 #[tauri::command]
@@ -95,7 +109,7 @@ async fn shell_execute(payload: String) -> Result<String, String> {
             }
         }
         Err(e) => Err(format!("Failed to execute shell command: {}", e)),
-        }
+    }
 }
 
 // File System: Read Directory (For scanning plugins)
@@ -114,7 +128,7 @@ async fn fs_read_dir(path: String) -> Result<Vec<String>, String> {
             }
             Ok(entries)
         }
-        Err(e) => Err(format!("Failed to read directory at {}: {}", path, e))
+        Err(e) => Err(format!("Failed to read directory at {}: {}", path, e)),
     }
 }
 
@@ -135,22 +149,24 @@ async fn fs_read_tree(path: String) -> Result<Vec<FileEntry>, String> {
             }
             Ok(entries)
         }
-        Err(e) => Err(format!("Failed to read directory tree at {}: {}", path, e))
+        Err(e) => Err(format!("Failed to read directory tree at {}: {}", path, e)),
     }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
-            execute_kill_switch, 
+            execute_kill_switch,
             get_hardware_telemetry,
             fs_read,
             fs_write,
             shell_execute,
             fs_read_dir,
-            fs_read_tree
+            fs_read_tree,
+            pick_workspace_dialog
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

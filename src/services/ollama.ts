@@ -1,4 +1,4 @@
-// src/services/ollama.ts
+// src/services/ollama.ts v1.0.1
 
 const OLLAMA_URL = "http://localhost:11434/api";
 
@@ -35,6 +35,66 @@ export const cancelGeneration = () => {
     activeController = null;
   }
 };
+
+export interface RouteResponse {
+  target: string;
+}
+
+/**
+ * The Director: Analyzes a prompt and dynamically routes it to the correct specialized model.
+ * Executes instantly in the background without streaming.
+ */
+export async function routePrompt(prompt: string): Promise<string> {
+  const routerModel = "llama3.1:8b"; // The fast, lightweight Director model
+
+  try {
+    const response = await fetch(`${OLLAMA_URL}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: routerModel,
+        messages: [
+          {
+            role: "system",
+            content: `You are the core routing agent for an IDE. Analyze the user prompt. 
+            If the user asks for code generation, writing new code, or modifying existing files, return {"target": "codestral:latest"}. 
+            If the user asks for general knowledge, basic chat, or file summarization, return {"target": "llama3.1:8b"}. 
+            If the user asks for code review, debugging, or critique, return {"target": "qwen2.5-coder:7b"}. 
+            Output strictly valid JSON and nothing else.`
+          },
+          { role: "user", content: prompt }
+        ],
+        stream: false, // We want the full JSON object at once, no streaming
+        format: "json", // Force Ollama to validate the output as JSON
+        options: {
+          keep_alive: "15m", // Keep the router warm for quick consecutive queries
+          num_ctx: 2048,     // Keep context small for speed
+          temperature: 0.1   // Low temp for highly deterministic routing
+        }
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Router API error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const parsed: RouteResponse = JSON.parse(data.message.content);
+    
+    // Safety net: if the router hallucinates a weird model name, fallback to base
+    const validModels = ["codestral:latest", "llama3.1:8b", "qwen2.5-coder:7b", "codestral"];
+    if (validModels.includes(parsed.target)) {
+      return parsed.target;
+    }
+    
+    console.warn(`[Router] Invalid target generated: ${parsed.target}. Defaulting to base model.`);
+    return routerModel;
+    
+  } catch (error) {
+    console.error("[Router] Routing failed, defaulting to base model:", error);
+    return routerModel;
+  }
+}
 
 export async function streamChat(
   model: string,
