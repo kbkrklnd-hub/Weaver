@@ -1,10 +1,17 @@
-// src/components/chat/CommandPalette.tsx
+// src/components/chat/CommandPalette.tsx v1.1.0-dynamic
 import { useState, useRef, useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { Maximize2, Minimize2, ChevronUp, ChevronDown, Terminal, Copy, ThumbsUp, ThumbsDown, RotateCcw, Square } from "lucide-react";
 import { useAgentStore } from "../../store/useAgentStore";
 import { usePluginStore } from "../../store/usePluginStore";
 import { useCotStore } from "../../store/useCotStore";
-import { streamChat, cancelGeneration, routePrompt } from "../../services/ollama";
+import { 
+  streamChat, 
+  cancelGeneration, 
+  routePrompt, 
+  AGENT_RESPONSE_SCHEMA, 
+  StructuredAgentResponse 
+} from "../../services/ollama";
 
 interface CommandPaletteProps {
   chatState: 'collapsed' | 'normal' | 'full';
@@ -25,18 +32,22 @@ const REGISTERED_COMMANDS: CommandDef[] = [
   { trigger: 'sys', description: 'Update base system instructions', category: 'core' }
 ];
 
-const REGISTERED_MODELS: CommandDef[] = [
-  { trigger: 'llama3.1:8b', description: 'Base 8B parameter model', category: 'model' },
-  { trigger: 'codestral', description: 'Heavy coding & syntax model', category: 'model' },
-  { trigger: 'Steve', description: 'Custom Unsloth fine-tune (GGUF)', category: 'model' },
-  { trigger: 'Steve@Maxwell', description: 'Coding persona wrapped on Steve', category: 'agent' },
-];
-
 interface PaletteOption {
   text: string;
   desc: string;
   type: string;
   prefix: string;
+}
+
+function extractPartialJsonField(rawBuffer: string, fieldName: string): string | null {
+  const regex = new RegExp(`"${fieldName}"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)`);
+  const match = rawBuffer.match(regex);
+  if (!match) return null;
+  return match[1]
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '\t')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\');
 }
 
 export default function CommandPalette({ chatState, setChatState }: CommandPaletteProps) {
@@ -52,11 +63,33 @@ export default function CommandPalette({ chatState, setChatState }: CommandPalet
   const [showPalette, setShowPalette] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<PaletteOption[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [availableModels, setAvailableModels] = useState<CommandDef[]>([
+    { trigger: 'llama3.1:8b', description: 'Base 8B parameter model', category: 'model' },
+    { trigger: 'codestral', description: 'Heavy coding & syntax model', category: 'model' },
+    { trigger: 'qwen2.5-coder:7b', description: 'Code review & debugging model', category: 'model' },
+  ]);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
+    // Dynamically fetch installed models from Ollama to eliminate hardcoded lists
+    fetch("http://localhost:11434/api/tags")
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.models) {
+          const fetched: CommandDef[] = data.models.map((m: any) => ({
+            trigger: m.name,
+            description: `Local Ollama model (${Math.round(m.size / (1024 * 1024 * 1024))}GB)`,
+            category: 'model' as const
+          }));
+          if (fetched.length > 0) {
+            setAvailableModels(fetched);
+          }
+        }
+      })
+      .catch(err => console.warn("[Weaver] Could not fetch dynamic model tags, using defaults:", err));
   }, []);
 
   useEffect(() => {
@@ -75,7 +108,7 @@ export default function CommandPalette({ chatState, setChatState }: CommandPalet
       
       if (query.startsWith("@")) {
         const modelQuery = query.slice(1).toLowerCase();
-        const matches = REGISTERED_MODELS.filter(m => m.trigger.toLowerCase().includes(modelQuery));
+        const matches = availableModels.filter(m => m.trigger.toLowerCase().includes(modelQuery));
         setFilteredOptions(matches.map(m => ({ 
           text: m.trigger, desc: m.description, type: m.category, prefix: '\\@' 
         })));
@@ -186,10 +219,11 @@ export default function CommandPalette({ chatState, setChatState }: CommandPalet
       if (inputRef.current) inputRef.current.style.height = 'auto';
       return;
     } else {
-      // NEW: The Director Routing (Auto-mode)
+      // The Director Routing (Auto-mode)
       setGenerating(true); 
       targetModel = await routePrompt(promptContent);
       setActiveModel(targetModel);
+      addEvent({ type: 'router', message: `Dispatched pipeline to target: @${targetModel}` });
     }
 
     const activePlugin = installedPlugins.find(p => p.namespace === activePluginContext);
@@ -215,77 +249,116 @@ export default function CommandPalette({ chatState, setChatState }: CommandPalet
         });
       }
 
-      const activeFileContext = activeFilePath 
-        ? `\nCURRENT ACTIVE FILE: ${activeFilePath}` 
-        : "\nNo file currently open.";
+      let activeFileContext = "\nNo file currently open.";
+      if (activeFilePath) {
+        try {
+          const rawFileContent = await invoke<string>('fs_read', { path: activeFilePath });
+          const numberedLines = rawFileContent
+            .split(/\r?\n/)
+            .slice(0, 500)
+            .map((line, idx) => `${idx + 1} | ${line}`)
+            .join('\n');
+          
+          activeFileContext = `\nCURRENT ACTIVE FILE: ${activeFilePath}\n--- BEGIN FILE CONTENT (Line Number | Code) ---\n${numberedLines || "(Empty File)"}\n--- END FILE CONTENT ---`;
+        } catch (err) {
+          activeFileContext = `\nCURRENT ACTIVE FILE: ${activeFilePath} (Unable to read content)`;
+        }
+      }
+
+      const currentWorkspace = localStorage.getItem('weaver_workspace_path') || "C:\\Users\\kbkla\\Projects\\Weaver";
+      const isCodingModel = targetModel.toLowerCase().includes('codestral') || targetModel.toLowerCase().includes('coder');
+
+      const modelRoleInstruction = isCodingModel
+        ? `You are a specialized coding agent. If the user requests code modifications, provide the exact tool call.`
+        : `You are a conversational assistant. Answer questions about the file or codebase naturally. Set "tool_call" to null unless explicitly asked to modify a file.`;
 
       contextMessages.push({
         role: 'system',
-        content: `When executing commands or editing code, you MUST structure your response using XML tags.
-1. Put your step-by-step reasoning inside <thought> tags.
-2. Put your exact JSON tool call inside <action> tags. Do not put anything else inside the action tags.
-
-Example:
-<thought>
-I will target line 1 of the requested file and inject the requested code.
-</thought>
-<action>
-{"name": "edit_local_file", "parameters": {"file_path": "ABSOLUTE_PATH_HERE", "start_line": 1, "end_line": 1, "replacement_code": "new code"}}
-</action>
-${activeFileContext}` 
+        content: `You are an autonomous IDE agent governed by the Weaver Multi-Agent Review Council.
+${modelRoleInstruction}
+You MUST respond with valid JSON matching the enforced schema:
+1. "thought": Your step-by-step reasoning.
+2. "review_council": Evaluate your response/edit across "security", "legal", "optimization", and "ux", and set "consensus" to "APPROVE" or "REJECT".
+3. "chat_response": Your direct markdown response to the user.
+4. "tool_call": Set to null if answering questions or chatting. Only provide {"name": "edit_local_file", "parameters": {"file_path": "...", "start_line": 1, "end_line": 1, "replacement_code": "..."}} if an explicit file edit was requested.
+ACTIVE WORKSPACE ROOT: ${currentWorkspace}${activeFileContext}` 
       });
 
       contextMessages.push(userMsg);
 
       clearCot();
       let responseBuffer = "";
-      let isToolExecution = false;
+      let streamedChatLen = 0;
 
       await streamChat(
         targetModel, 
         contextMessages, 
-        { tier: hardware?.compute_tier || "standard", isBackgroundCritic: targetModel.includes("qwen") },
+        { 
+          tier: hardware?.compute_tier || "standard", 
+          isBackgroundCritic: targetModel.includes("qwen"),
+          format: AGENT_RESPONSE_SCHEMA
+        },
         (chunk) => {
           responseBuffer += chunk;
           
-          if (responseBuffer.trimStart().startsWith("<")) {
-            isToolExecution = true;
+          const partialThought = extractPartialJsonField(responseBuffer, "thought");
+          const partialSec = extractPartialJsonField(responseBuffer, "security");
+          const partialOpt = extractPartialJsonField(responseBuffer, "optimization");
+          const partialConsensus = extractPartialJsonField(responseBuffer, "consensus");
+
+          if (partialThought) {
+            let cotDisplay = partialThought;
+            if (partialSec || partialOpt) {
+              cotDisplay += `\n\n--- REVIEW COUNCIL ---`;
+              if (partialSec) cotDisplay += `\n[Security]: ${partialSec}`;
+              if (partialOpt) cotDisplay += `\n[Optimization]: ${partialOpt}`;
+              if (partialConsensus) cotDisplay += `\n[Consensus]: ${partialConsensus}`;
+            }
+            setCot(cotDisplay);
           }
 
-          const thoughtMatch = responseBuffer.match(/<thought>([\s\S]*?)(?:<\/thought>|$)/);
-          if (thoughtMatch) {
-            setCot(thoughtMatch[1].trim());
-          }
-
-          if (!isToolExecution) {
-            appendTokenToLast(chunk);
+          const partialChat = extractPartialJsonField(responseBuffer, "chat_response");
+          if (partialChat !== null && partialChat.length > streamedChatLen) {
+            const delta = partialChat.slice(streamedChatLen);
+            appendTokenToLast(delta);
+            streamedChatLen = partialChat.length;
           }
         }
       );
 
-      if (responseBuffer.includes("<action>")) {
+      if (responseBuffer.trim()) {
         try {
-          const actionStart = responseBuffer.indexOf('<action>') + 8;
-          const actionEnd = responseBuffer.indexOf('</action>');
-          
-          if (actionStart > 7 && actionEnd > actionStart) {
-            const jsonString = responseBuffer.substring(actionStart, actionEnd).trim();
-            const toolPayload = JSON.parse(jsonString);
+          const parsedPayload: StructuredAgentResponse = JSON.parse(responseBuffer);
 
-            if (toolPayload.name === "edit_local_file" && toolPayload.parameters) {
+          const rc = parsedPayload.review_council;
+          const finalCot = `${parsedPayload.thought}\n\n--- REVIEW COUNCIL (${rc.consensus}) ---\n• Security: ${rc.security}\n• Legal: ${rc.legal}\n• Optimization: ${rc.optimization}\n• UX: ${rc.ux}`;
+          setCot(finalCot);
+
+          if (parsedPayload.chat_response && parsedPayload.chat_response.length > streamedChatLen) {
+            appendTokenToLast(parsedPayload.chat_response.slice(streamedChatLen));
+          }
+
+          if (parsedPayload.tool_call && parsedPayload.tool_call.name === "edit_local_file") {
+            if (rc.consensus === "REJECT") {
+              addEvent({
+                type: 'error',
+                message: `Review Council REJECTED file edit: ${rc.security}`
+              });
+            } else {
+              const params = parsedPayload.tool_call.parameters;
               window.dispatchEvent(new CustomEvent('weaver-ai-edit', {
-                detail: toolPayload.parameters
+                detail: params
               }));
               
               addEvent({ 
                 type: 'system', 
-                message: `Applied edits to lines ${toolPayload.parameters.start_line}-${toolPayload.parameters.end_line} in ${toolPayload.parameters.file_path.split('\\').pop()}` 
+                message: `[Council: ${rc.consensus}] Applied edits to lines ${params.start_line}-${params.end_line} in ${params.file_path.split(/[\\/]/).pop()}` 
               });
             }
           }
         } catch (e) {
-          console.error("Failed to parse agent action block:", e);
-          addEvent({ type: 'error', message: 'Agent failed to format the action block correctly.' });
+          console.error("Failed to parse structured agent response:", e);
+          addEvent({ type: 'error', message: 'Structured output validation failed.' });
         }
       }
     } finally {

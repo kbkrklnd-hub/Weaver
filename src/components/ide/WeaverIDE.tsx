@@ -1,7 +1,8 @@
+// v1.1.0-patch1
 import { useState, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { invoke } from '@tauri-apps/api/core';
-import { Folder, FileCode, FileText, ChevronRight, ChevronDown, X, Save } from 'lucide-react';
+import { Folder, FileCode, FileText, ChevronRight, ChevronDown, X, Save, FilePlus } from 'lucide-react';
 import { useAgentStore } from '../../store/useAgentStore';
 
 interface FileEntry {
@@ -86,21 +87,27 @@ const FileTreeItem = ({
   );
 };
 
+const DEFAULT_PROJECT_PATH = "C:\\Users\\kbkla\\Projects\\Weaver";
+
 export default function WeaverIDE() {
+  const [workspacePath, setWorkspacePath] = useState<string>(() => {
+    return localStorage.getItem('weaver_workspace_path') || DEFAULT_PROJECT_PATH;
+  });
   const [rootFiles, setRootFiles] = useState<FileEntry[]>([]);
   const [editorContent, setEditorContent] = useState<string>("// Select a file from the explorer to begin editing");
   
-  // Dropdown and layout states
+  // Dropdown, layout, and New File states
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showExplorer, setShowExplorer] = useState(true);
   const [wordWrap, setWordWrap] = useState<'on' | 'off'>('on');
+  const [isCreatingFile, setIsCreatingFile] = useState(false);
+  const [newFileName, setNewFileName] = useState("");
   
-  const { activeFilePath, setActiveFilePath, openFiles, addOpenFile, removeOpenFile } = useAgentStore();
+  const { activeFilePath, setActiveFilePath, openFiles, addOpenFile, removeOpenFile, addEvent } = useAgentStore();
   
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
-
-  const DEFAULT_PROJECT_PATH = "C:\\Users\\kbkla\\Projects\\Weaver";
+  const newFileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle clicking away from dropdowns
   useEffect(() => {
@@ -111,40 +118,118 @@ export default function WeaverIDE() {
     return () => window.removeEventListener('click', closeMenu);
   }, [activeMenu]);
 
-const handleOpenFolder = async () => {
+  // Focus the inline input when creating a new file
+  useEffect(() => {
+    if (isCreatingFile) {
+      setShowExplorer(true);
+      setTimeout(() => newFileInputRef.current?.focus(), 50);
+    }
+  }, [isCreatingFile]);
+
+  const loadDirectory = async (targetPath: string) => {
+    try {
+      const entries = await invoke<FileEntry[]>('fs_read_tree', { path: targetPath });
+      const sorted = entries.sort((a, b) => {
+        if (a.is_dir === b.is_dir) return a.name.localeCompare(b.name);
+        return a.is_dir ? -1 : 1;
+      });
+      setRootFiles(sorted);
+    } catch (error) {
+      console.error("Failed to load directory:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadDirectory(workspacePath);
+  }, [workspacePath]);
+
+  const handleOpenFolder = async () => {
     try {
       // Call our custom Rust command instead of the frontend API
       const selectedPath = await invoke<string | null>('pick_workspace_dialog');
       
       if (!selectedPath) return; // User cancelled the dialog
       
-      const entries = await invoke<FileEntry[]>('fs_read_tree', { path: selectedPath });
-      const sorted = entries.sort((a, b) => {
-        if (a.is_dir === b.is_dir) return a.name.localeCompare(b.name);
-        return a.is_dir ? -1 : 1;
-      });
-      setRootFiles(sorted);
+      setWorkspacePath(selectedPath);
+      localStorage.setItem('weaver_workspace_path', selectedPath);
       
       // Close all open tabs when loading a new workspace
       openFiles.forEach(file => removeOpenFile(file.path));
+
+      if (addEvent) {
+        addEvent({ type: 'system', message: `Opened workspace: ${selectedPath}` });
+      }
     } catch (error) {
       console.error("Failed to open directory:", error);
     }
   };
 
-  const handleSave = async () => {
-    if (!activeFilePath || !editorRef.current) return;
+  const handleCreateNewFile = async () => {
+    const trimmed = newFileName.trim();
+    if (!trimmed) {
+      setIsCreatingFile(false);
+      return;
+    }
+
+    const separator = workspacePath.includes('\\') ? '\\' : '/';
+    const cleanRelative = trimmed.replace(/^[\\/]+/, '');
+    const fullPath = `${workspacePath}${separator}${cleanRelative}`;
+    const displayName = cleanRelative.split(/[\\/]/).pop() || cleanRelative;
+
+    try {
+      await invoke<string>('fs_write', { 
+        path: fullPath, 
+        contents: "" 
+      });
+      await loadDirectory(workspacePath);
+      addOpenFile(fullPath, displayName);
+      if (addEvent) {
+        addEvent({ type: 'system', message: `Created new file: ${displayName}` });
+      }
+    } catch (error) {
+      console.error("Failed to create file:", error);
+      if (addEvent) {
+        addEvent({ type: 'error', message: `Failed to create file: ${displayName}` });
+      }
+    } finally {
+      setNewFileName("");
+      setIsCreatingFile(false);
+    }
+  };
+
+const handleSave = async () => {
+    // By using getState(), we bypass the React closure trap entirely
+    const store = useAgentStore.getState();
+    const currentPath = store.activeFilePath;
+    
+    if (!currentPath || !editorRef.current) return;
     try {
       const currentContent = editorRef.current.getValue();
-      const response = await invoke<string>('fs_write', { 
-        path: activeFilePath, 
+      // Notice we removed the <string> return type since Rust now returns ()
+      await invoke('fs_write', { 
+        path: currentPath, 
         contents: currentContent 
       });
-      console.log("[Weaver] File Saved:", response); 
+      console.log("[Weaver] File Saved to disk & ledger"); 
+      if (store.addEvent) {
+        store.addEvent({ type: 'system', message: `Saved ${currentPath.split(/[\\/]/).pop()}` });
+      }
     } catch (error) {
       console.error("Save failed:", error);
     }
   };
+
+  // Global interceptor for when the Monaco editor is NOT actively focused
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        handleSave();
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   // Helper to trigger Monaco actions
   const triggerMonacoAction = (actionId: string) => {
@@ -181,22 +266,6 @@ const handleOpenFolder = async () => {
   };
 
   useEffect(() => {
-    async function loadDirectory() {
-      try {
-        const entries = await invoke<FileEntry[]>('fs_read_tree', { path: DEFAULT_PROJECT_PATH });
-        const sorted = entries.sort((a, b) => {
-          if (a.is_dir === b.is_dir) return a.name.localeCompare(b.name);
-          return a.is_dir ? -1 : 1;
-        });
-        setRootFiles(sorted);
-      } catch (error) {
-        console.error("Failed to load directory:", error);
-      }
-    }
-    loadDirectory();
-  }, []);
-
-  useEffect(() => {
     if (!activeFilePath) {
       setEditorContent("// Select a file from the explorer to begin editing");
       return;
@@ -210,29 +279,69 @@ const handleOpenFolder = async () => {
   }, [activeFilePath]);
 
   useEffect(() => {
-    const handleAiEdit = (e: CustomEvent) => {
-      if (!editorRef.current || !monacoRef.current) return;
-      
-      const { file_path, start_line, end_line, replacement_code } = e.detail;
+    const handleAiEdit = async (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { file_path, start_line, end_line, replacement_code } = customEvent.detail;
 
-      if (activeFilePath !== file_path) {
-        console.warn(`[Weaver] Agent attempted to edit ${file_path}, but ${activeFilePath} is active.`);
+      // 1. Resolve relative paths (e.g. "test.md") against the current workspacePath
+      const separator = workspacePath.includes('\\') ? '\\' : '/';
+      const isAbsolute = /^[a-zA-Z]:[\\/]/.test(file_path) || file_path.startsWith('/');
+      const resolvedPath = isAbsolute
+        ? file_path.replace(/\//g, separator)
+        : `${workspacePath}${separator}${file_path.replace(/^[\\/]+/, '').replace(/\//g, separator)}`;
+
+      const normalize = (p: string | null) => (p ? p.replace(/\//g, '\\').toLowerCase() : '');
+      const isCurrentlyActive = normalize(activeFilePath) === normalize(resolvedPath);
+
+      // 2. If the target file IS currently open and active in Monaco
+      if (isCurrentlyActive && editorRef.current && monacoRef.current) {
+        const range = new monacoRef.current.Range(start_line, 1, end_line + 1, 1);
+        editorRef.current.executeEdits("weaver-agent", [{
+          range: range,
+          text: replacement_code + '\n'
+        }]);
+
+        const updatedValue = editorRef.current.getValue();
+        setEditorContent(updatedValue);
+        await invoke<string>('fs_write', { path: resolvedPath, contents: updatedValue });
+        console.log(`[Weaver] AI edit applied & saved to active file: ${resolvedPath}`);
         return;
       }
 
-      const range = new monacoRef.current.Range(start_line, 1, end_line + 1, 1);
+      // 3. If the target file is NOT the active tab (background file edit)
+      try {
+        let existingContent = "";
+        try {
+          existingContent = await invoke<string>('fs_read', { path: resolvedPath });
+        } catch {
+          existingContent = "";
+        }
 
-      editorRef.current.executeEdits("weaver-agent", [{
-        range: range,
-        text: replacement_code + '\n'
-      }]);
-      
-      console.log(`[Weaver] AI edit applied to lines ${start_line}-${end_line}`);
+        const lines = existingContent.length > 0 ? existingContent.split(/\r?\n/) : [];
+        const startIdx = Math.max(0, (start_line || 1) - 1);
+        const deleteCount = Math.max(0, (end_line || start_line || 1) - start_line + 1);
+        const newLines = replacement_code.split(/\r?\n/);
+
+        lines.splice(startIdx, deleteCount, ...newLines);
+        const updatedContent = lines.join('\n');
+
+        await invoke<string>('fs_write', { path: resolvedPath, contents: updatedContent });
+        await loadDirectory(workspacePath);
+
+        // Automatically open/focus the edited file tab so the user sees the change
+        const fileName = resolvedPath.split(/[\\/]/).pop() || resolvedPath;
+        addOpenFile(resolvedPath, fileName);
+        setEditorContent(updatedContent);
+
+        console.log(`[Weaver] AI background edit applied & saved to: ${resolvedPath}`);
+      } catch (err) {
+        console.error(`[Weaver] Failed to apply AI background edit to ${resolvedPath}:`, err);
+      }
     };
 
-    window.addEventListener('weaver-ai-edit', handleAiEdit as EventListener);
-    return () => window.removeEventListener('weaver-ai-edit', handleAiEdit as EventListener);
-  }, [activeFilePath]);
+    window.addEventListener('weaver-ai-edit', handleAiEdit);
+    return () => window.removeEventListener('weaver-ai-edit', handleAiEdit);
+  }, [activeFilePath, workspacePath]);
 
   const handleOpenFile = (file: FileEntry) => {
     addOpenFile(file.path, file.name);
@@ -246,7 +355,7 @@ const handleOpenFolder = async () => {
     if (filename.endsWith('.css')) return 'css';
     if (filename.endsWith('.html')) return 'html';
     if (filename.endsWith('.xml')) return 'xml';
-    return 'plaintext'; // Fixed the typo here!
+    return 'plaintext';
   };
 
   const DropdownItem = ({ label, shortcut, onClick }: { label: string, shortcut?: string, onClick: () => void }) => (
@@ -259,18 +368,52 @@ const handleOpenFolder = async () => {
     </button>
   );
 
+  const workspaceTitle = workspacePath.split(/[\\/]/).pop() || "Explorer";
+
   return (
     <div className="flex h-full w-full bg-[#1e1e1e]">
       
       {showExplorer && (
         <div className="w-64 border-r border-zinc-800 flex flex-col bg-zinc-950 transition-all">
-          <div className="h-10 border-b border-zinc-800 flex items-center px-4 text-xs font-bold text-zinc-500 uppercase tracking-wider shrink-0">
-            Explorer
+          <div className="h-10 border-b border-zinc-800 flex items-center justify-between px-4 text-xs font-bold text-zinc-500 uppercase tracking-wider shrink-0">
+            <span className="truncate" title={workspacePath}>{workspaceTitle}</span>
+            <button
+              onClick={() => setIsCreatingFile(true)}
+              className="p-1 text-zinc-500 hover:text-emerald-400 hover:bg-zinc-900 rounded transition-colors"
+              title="New File"
+            >
+              <FilePlus className="h-3.5 w-3.5" />
+            </button>
           </div>
+
+          {isCreatingFile && (
+            <div className="px-3 py-2 border-b border-zinc-800 bg-zinc-900/60">
+              <input
+                ref={newFileInputRef}
+                type="text"
+                value={newFileName}
+                onChange={(e) => setNewFileName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleCreateNewFile();
+                  if (e.key === 'Escape') {
+                    setIsCreatingFile(false);
+                    setNewFileName("");
+                  }
+                }}
+                onBlur={() => {
+                  setIsCreatingFile(false);
+                  setNewFileName("");
+                }}
+                placeholder="filename.ts (Enter)"
+                className="w-full bg-zinc-950 border border-emerald-500/60 rounded px-2 py-1 text-xs text-zinc-100 placeholder-zinc-500 outline-none font-mono"
+              />
+            </div>
+          )}
+
           <div className="flex-1 overflow-y-auto py-2 no-scrollbar">
             {rootFiles.map((file, idx) => (
               <FileTreeItem 
-                key={idx} 
+                key={`${file.path}-${idx}`} 
                 file={file} 
                 depth={0} 
                 activeFilePath={activeFilePath}
@@ -297,8 +440,8 @@ const handleOpenFolder = async () => {
               </button>
               {activeMenu === 'file' && (
                 <div className="absolute top-full left-0 mt-1 w-56 bg-zinc-900 border border-zinc-700 rounded-md shadow-xl py-1 z-50">
-                  <DropdownItem label="New File" onClick={() => console.log("New file logic here")} />
-                  <DropdownItem label="Open Folder..." onClick={() => console.log(handleOpenFolder)} />
+                  <DropdownItem label="New File" shortcut="Ctrl+N" onClick={() => setIsCreatingFile(true)} />
+                  <DropdownItem label="Open Folder..." onClick={handleOpenFolder} />
                   <div className="h-px bg-zinc-800 my-1"></div>
                   <DropdownItem label="Save" shortcut="Ctrl+S" onClick={handleSave} />
                   <DropdownItem label="Close Editor" shortcut="Ctrl+W" onClick={() => activeFilePath && removeOpenFile(activeFilePath)} />

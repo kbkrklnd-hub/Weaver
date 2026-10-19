@@ -1,11 +1,11 @@
 ---
 document_id: "WV-DOC-004"
 title: "Project Changelog"
-version: "0.3.0"
+version: "1.1.0"
 status: "active"
 author: "Octave Labs Core"
 created_date: "2026-10-09"
-last_updated: "2026-10-13"
+last_updated: "2026-10-18"
 license: "Apache-2.0"
 framework_target: "Tauri v2"
 security_tier: "tier-0"
@@ -14,52 +14,41 @@ changelog_ref: "CHANGELOG.md"
 
 # Changelog
 
-All notable changes to this project will be documented in this file[cite: 11].
+All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)[cite: 11].
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Packaging and executable builds for v1.0.0 MVP portfolio release.
+- **Enterprise Guardrails:** `regorus` OPA policy-as-code integration for deterministic RBAC file-path blacklisting.
+- **WASI Sandboxing:** Execution of agent scripts in isolated WebAssembly runtimes.
+- **Installer:** Executable installer packaging via Tauri build pipeline.
 
 ---
 
-## [0.3.0] - 2026-10-13
+## [1.1.0] - 2026-10-18 (The Governance Update)
 
 ### Added
-- **Global File State Routing:** Elevated `activeFilePath` to the global Zustand `AgentStore` to guarantee the LLM context matches the exact file open in the Monaco editor.
-- **Hardened Stream Interceptor:** Implemented an aggressive regex and buffer-trimming parser to ensure `<thought>` and `<action>` XML tags never leak into the Chat Terminal UI.
-- **Bottom Status Bar:** Reclaimed vertical workspace by migrating hardware telemetry from the CoT panel into a dedicated, bottom-aligned application status bar.
-- **WMI VRAM Bypass:** Updated Rust hardware polling to utilize PowerShell WMI (`Win32_VideoController`) to bypass zeroed AMD performance counters during deep idle states, returning accurate Dedicated Video Memory metrics.
-
-### Changed
-- **Unified System Trace:** Stripped the CoT panel of the hardware widget, merging standard system events, security alerts, and live agent cognitive reasoning into a single, chronological scrolling feed.
-- **UI Unlocking Guarantee:** Wrapped the primary LLM inference block in a `try...finally` statement to ensure the `isGenerating` lock releases regardless of parsing errors or manual kill-switch aborts.
-- **Error Routing:** Diverted tool-call success metrics and command errors from the Chat Terminal to the System Trace to maintain a clean conversational UI.
+- **Immutable SQLite Audit Ledger:** Implemented an embedded SQLite database in WAL mode (`weaver_audit.db`) that cryptographically records all agent file modifications.
+- **Merkle Hash-Chaining:** All file patches now compute a unified diff (`similar`) and a SHA-256 cryptographic hash chaining back to the previous transaction, ensuring tamper-evident enterprise accountability.
+- **Database-Level Immutability:** Enforced append-only architecture via `BEFORE UPDATE` and `BEFORE DELETE` `RAISE(ABORT)` triggers at the SQLite level.
+- **Grammar-Constrained Outputs (GBNF):** Replaced fragile XML tag scraping with strict JSON Schema formatting, locking the Ollama LLM sampler to output mathematically valid `StructuredAgentResponse` objects containing the Chain of Thought, Review Council consensus, and tool payloads.
+- **Dynamic Model Discovery:** Eliminated hardcoded models in the Command Palette; the UI now dynamically queries `GET /api/tags` on boot to populate available local models.
 
 ---
 
-## [0.2.0] - 2026-10-12
+## [1.0.1] - 2026-10-15
 
 ### Added
-- **Native Directory Scanning:** Implemented `fs_read_dir` in Rust to scan arbitrary host OS directories via Tauri IPC[cite: 11].
-- **Dynamic Manifest Discovery:** Upgraded `usePluginStore.ts` to dynamically register plugins via local `manifest.json` files[cite: 11].
-- **Zero-Mock Plugin State:** Purged hardcoded mock plugins from the frontend[cite: 11].
-- **Dynamic Workspace Manager:** Resolves and mounts workspaces dynamically based on registered plugin namespaces[cite: 11].
-- **Architectural Pivot (Core IDE):** Integrated Monaco Editor directly into Weaver's core layer[cite: 11].
+- **Multi-Tab IDE Engine:** Upgraded `useAgentStore` and `WeaverIDE.tsx` with a VS Code-style `openFiles` tab array, active tab state persistence, automatic fallback tab selection on close, and unsaved/active visual indicators.
+- **Autonomous "Director" Semantic Router:** Implemented `routePrompt` in `src/services/ollama.ts` using `llama3.1:8b` (`format: "json"`, `temperature: 0.1`) to automatically classify user intent and dynamically dispatch prompts to specialized local models (`codestral:latest`, `qwen2.5-coder:7b`, `llama3.1:8b`) while preserving manual `\@model` and `\sys` overrides in `CommandPalette.tsx`.
+- **Secure Rust-Native Workspace Picker:** Added `pick_workspace_dialog` command in `src-tauri/src/lib.rs` using the `rfd` (v0.16) crate. Allows dynamic workspace directory switching from the UI while strictly preserving the zero-trust React-to-Rust IPC boundary (no frontend dialog APIs exposed).
+- **Interactive IDE Toolbar Menus:** Built stateful `File`, `Edit`, and `View` dropdown menus in `WeaverIDE.tsx` with click-away listeners, wired directly to Monaco editor actions (`undo`, `redo`, `cut`, `copy`, `paste`, `find`, `quickCommand`) and workspace layout toggles (Explorer sidebar visibility and Word Wrap).
 
-### Changed
-- **Export Refactoring:** Converted `WorkspaceManager` to a named export to eliminate collisions[cite: 11].
+### Fixed
+- **Monaco XML & Plaintext Linter Fallback:** Added explicit `.xml` syntax highlighting support in `getLanguage` and changed the default unrecognized file fallback from `javascript` to `plaintext`, eliminating false-positive TypeScript/JS syntax error squiggles on Repomix outputs and raw text logs.
 
 ---
 
-## [0.1.0] - 2026-10-09
-
-### Added
-- **Project Initialization:** Bootstrapped Weaver with Tauri v2, React, and TypeScript[cite: 11].
-- **Dynamic 3-Way Chat Terminal:** Bottom-anchored workspace terminal[cite: 11].
-- **Ollama Engine Bridge:** Streaming service communicating with local Ollama REST endpoints[cite: 11].
-- **Hardware Telemetry Profiler:** Rust backend `sysinfo` polling to calculate system RAM[cite: 11].
-- **IDE Command Palette:** Auto-resizing textarea supporting system commands and model routing[cite: 11].
-- **Master Kill Switch:** Hardware-level interrupt bound to an `AbortController`[cite: 11].
-- **Security Approval Modal:** Human-in-the-loop interception for sensitive operations[cite: 11].
+## [1.0.0] - 2026-10-14
+*(See previous history in repo for full 1.0.0 and beta release notes)*

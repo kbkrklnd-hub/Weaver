@@ -9,6 +9,9 @@ export default defineConfig({
   server: {
     port: 1420,
     strictPort: true,
+    watch: {
+      ignored: ["**/weaver_audit.db", "**/weaver_audit.db-wal", "**/weaver_audit.db-shm"]
+    }
   },
   envPrefix: ["VITE_", "TAURI_"],
 });

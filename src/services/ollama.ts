@@ -1,4 +1,4 @@
-// src/services/ollama.ts v1.0.1
+// src/services/ollama.ts v1.1.0
 
 const OLLAMA_URL = "http://localhost:11434/api";
 
@@ -14,18 +14,112 @@ export interface StreamResponse {
   done: boolean;
 }
 
-interface FetchOptions {
+export interface FetchOptions {
   tier: string;
   isBackgroundCritic?: boolean;
+  format?: "json" | Record<string, any>;
+}
+
+export interface ReviewCouncilAssessment {
+  security: string;
+  legal: string;
+  optimization: string;
+  ux: string;
+  consensus: "APPROVE" | "REJECT";
+}
+
+export interface ToolCallPayload {
+  name: "edit_local_file";
+  parameters: {
+    file_path: string;
+    start_line: number;
+    end_line: number;
+    replacement_code: string;
+  };
+}
+
+export interface StructuredAgentResponse {
+  thought: string;
+  review_council: ReviewCouncilAssessment;
+  chat_response: string;
+  tool_call: ToolCallPayload | null;
 }
 
 /**
- * Streams a chat completion from the local Ollama instance.
- * @param model The target model (e.g., 'llama3.1:8b', 'codestral')
- * @param messages The conversation history
- * @param options Hardware profiling constraints
- * @param onChunk Callback function to update the UI as tokens stream in
+ * Grammar-constrained JSON Schema for the Director Router
  */
+export const ROUTER_JSON_SCHEMA = {
+  type: "object",
+  properties: {
+    target: {
+      type: "string",
+      enum: ["codestral:latest", "llama3.1:8b", "qwen2.5-coder:7b"]
+    }
+  },
+  required: ["target"],
+  additionalProperties: false
+};
+
+/**
+ * Grammar-constrained JSON Schema for Worker Agents & Review Council
+ */
+export const AGENT_RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    thought: {
+      type: "string",
+      description: "Step-by-step internal reasoning and implementation plan."
+    },
+    review_council: {
+      type: "object",
+      properties: {
+        security: { type: "string" },
+        legal: { type: "string" },
+        optimization: { type: "string" },
+        ux: { type: "string" },
+        consensus: {
+          type: "string",
+          enum: ["APPROVE", "REJECT"]
+        }
+      },
+      required: ["security", "legal", "optimization", "ux", "consensus"],
+      additionalProperties: false
+    },
+    chat_response: {
+      type: "string",
+      description: "Clean conversational response shown to the user in the terminal."
+    },
+    tool_call: {
+      anyOf: [
+        { type: "null" },
+        {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              enum: ["edit_local_file"]
+            },
+            parameters: {
+              type: "object",
+              properties: {
+                file_path: { type: "string" },
+                start_line: { type: "integer" },
+                end_line: { type: "integer" },
+                replacement_code: { type: "string" }
+              },
+              required: ["file_path", "start_line", "end_line", "replacement_code"],
+              additionalProperties: false
+            }
+          },
+          required: ["name", "parameters"],
+          additionalProperties: false
+        }
+      ]
+    }
+  },
+  required: ["thought", "review_council", "chat_response", "tool_call"],
+  additionalProperties: false
+};
 
 let activeController: AbortController | null = null;
 
@@ -42,7 +136,7 @@ export interface RouteResponse {
 
 /**
  * The Director: Analyzes a prompt and dynamically routes it to the correct specialized model.
- * Executes instantly in the background without streaming.
+ * Uses grammar-constrained JSON Schema for deterministic target selection.
  */
 export async function routePrompt(prompt: string): Promise<string> {
   const routerModel = "llama3.1:8b"; // The fast, lightweight Director model
@@ -60,16 +154,16 @@ export async function routePrompt(prompt: string): Promise<string> {
             If the user asks for code generation, writing new code, or modifying existing files, return {"target": "codestral:latest"}. 
             If the user asks for general knowledge, basic chat, or file summarization, return {"target": "llama3.1:8b"}. 
             If the user asks for code review, debugging, or critique, return {"target": "qwen2.5-coder:7b"}. 
-            Output strictly valid JSON and nothing else.`
+            Output strictly valid JSON matching the schema.`
           },
           { role: "user", content: prompt }
         ],
-        stream: false, // We want the full JSON object at once, no streaming
-        format: "json", // Force Ollama to validate the output as JSON
+        stream: false,
+        format: ROUTER_JSON_SCHEMA, // Enforce strict GBNF grammar schema
         options: {
-          keep_alive: "15m", // Keep the router warm for quick consecutive queries
-          num_ctx: 2048,     // Keep context small for speed
-          temperature: 0.1   // Low temp for highly deterministic routing
+          keep_alive: "15m",
+          num_ctx: 2048,
+          temperature: 0.1
         }
       }),
     });
@@ -81,7 +175,6 @@ export async function routePrompt(prompt: string): Promise<string> {
     const data = await response.json();
     const parsed: RouteResponse = JSON.parse(data.message.content);
     
-    // Safety net: if the router hallucinates a weird model name, fallback to base
     const validModels = ["codestral:latest", "llama3.1:8b", "qwen2.5-coder:7b", "codestral"];
     if (validModels.includes(parsed.target)) {
       return parsed.target;
@@ -118,18 +211,24 @@ export async function streamChat(
   }
 
   try {
+    const requestBody: Record<string, any> = {
+      model,
+      messages,
+      stream: true,
+      options: {
+        keep_alive: keepAlive,
+        num_ctx: numCtx
+      }
+    };
+
+    if (options.format) {
+      requestBody.format = options.format;
+    }
+
     const response = await fetch(`${OLLAMA_URL}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model,
-        messages,
-        stream: true,
-        options: {
-          keep_alive: keepAlive,
-          num_ctx: numCtx
-        }
-      }),
+      body: JSON.stringify(requestBody),
       signal: activeController.signal // 2. Attach the kill switch signal here!
     });
 

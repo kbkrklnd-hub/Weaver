@@ -1,7 +1,18 @@
-use serde::Serialize;
+use rfd::FileDialog;
 use std::fs;
 use std::process::Command;
+use std::str::FromStr;
 use sysinfo::System;
+
+// Audit Ledger Dependencies
+use chrono::Utc;
+use sha2::{Digest, Sha256};
+use similar::TextDiff;
+use sqlx::{
+    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
+    Row, SqlitePool,
+};
+use tauri::State;
 
 #[derive(serde::Serialize)]
 struct HardwareTelemetry {
@@ -16,6 +27,57 @@ struct FileEntry {
     name: String,
     path: String,
     is_dir: bool,
+}
+
+// Managed Application State
+struct AppState {
+    db: SqlitePool,
+}
+
+/// Initializes the Append-Only SQLite Database
+async fn init_audit_db() -> Result<SqlitePool, String> {
+    let options = SqliteConnectOptions::from_str("sqlite://../weaver_audit.db?mode=rwc")
+        .map_err(|e| e.to_string())?;
+
+    let pool = SqlitePoolOptions::new()
+        .connect_with(options)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    // 1. Create the Audit Table
+    sqlx::query(
+        "CREATE TABLE IF NOT EXISTS audit_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp_utc TEXT NOT NULL,
+            action_type TEXT NOT NULL,
+            file_path TEXT NOT NULL,
+            unified_diff TEXT NOT NULL,
+            prev_hash TEXT NOT NULL,
+            curr_hash TEXT NOT NULL
+        );"
+    )
+    .execute(&pool)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    // 2. Enforce Append-Only Immutability via SQLite Triggers
+    sqlx::query(
+        "CREATE TRIGGER IF NOT EXISTS enforce_append_only_update BEFORE UPDATE ON audit_events
+         BEGIN SELECT RAISE(ABORT, 'Audit ledger is immutable: UPDATE prohibited'); END;"
+    )
+    .execute(&pool)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    sqlx::query(
+        "CREATE TRIGGER IF NOT EXISTS enforce_append_only_delete BEFORE DELETE ON audit_events
+         BEGIN SELECT RAISE(ABORT, 'Audit ledger is immutable: DELETE prohibited'); END;"
+    )
+    .execute(&pool)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    Ok(pool)
 }
 
 #[tauri::command]
@@ -84,7 +146,54 @@ async fn fs_read(path: String) -> Result<String, String> {
 }
 
 #[tauri::command]
-async fn fs_write(path: String, contents: String) -> Result<(), String> {
+async fn fs_write(path: String, contents: String, state: State<'_, AppState>) -> Result<(), String> {
+    let db = &state.db;
+
+    // 1. Read old file content to calculate diff
+    let old_content = fs::read_to_string(&path).unwrap_or_else(|_| "".to_string());
+    
+    // 2. Generate Unified Diff
+    let diff = TextDiff::from_lines(&old_content, &contents)
+        .unified_diff()
+        .header("original", "modified")
+        .to_string();
+
+    // 3. Prepare Audit Metadata
+    let timestamp = Utc::now().to_rfc3339();
+    let action_type = "fs_write";
+
+    // 4. Fetch the previous hash in the ledger (Merkle log linking)
+    let row_result = sqlx::query("SELECT curr_hash FROM audit_events ORDER BY id DESC LIMIT 1")
+        .fetch_optional(db)
+        .await
+        .map_err(|e| e.to_string())?;
+    
+    let prev_hash: String = row_result
+        .map(|r| r.get("curr_hash"))
+        .unwrap_or_else(|| "GENESIS_HASH".to_string());
+
+    // 5. Calculate Cryptographic Hash of the current event
+    let mut hasher = Sha256::new();
+    let payload = format!("{}|{}|{}|{}|{}", prev_hash, timestamp, action_type, path, diff);
+    hasher.update(payload.as_bytes());
+    let curr_hash = format!("{:x}", hasher.finalize());
+
+    // 6. Append to the SQLite Ledger FIRST
+    sqlx::query(
+        "INSERT INTO audit_events (timestamp_utc, action_type, file_path, unified_diff, prev_hash, curr_hash) 
+         VALUES (?, ?, ?, ?, ?, ?)"
+    )
+    .bind(&timestamp)
+    .bind(action_type)
+    .bind(&path)
+    .bind(&diff)
+    .bind(&prev_hash)
+    .bind(&curr_hash)
+    .execute(db)
+    .await
+    .map_err(|e| format!("Audit Ledger Integrity Failure (Write Aborted): {}", e))?;
+
+    // 7. Execute physical write to disk only if Audit succeeds
     fs::write(&path, contents).map_err(|e| format!("Failed to write to {}: {}", path, e))
 }
 
@@ -155,7 +264,13 @@ async fn fs_read_tree(path: String) -> Result<Vec<FileEntry>, String> {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Spin up the SQLite Ledger before booting the UI
+    let db_pool = tauri::async_runtime::block_on(async {
+        init_audit_db().await.expect("FATAL: Failed to initialize SQLite Audit Ledger")
+    });
+
     tauri::Builder::default()
+        .manage(AppState { db: db_pool })
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
