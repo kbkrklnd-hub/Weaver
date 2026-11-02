@@ -189,7 +189,10 @@ export default function WeaverIDE() {
     } catch (error) {
       console.error("Failed to create file:", error);
       if (addEvent) {
-        addEvent({ type: 'error', message: `Failed to create file: ${displayName}` });
+        addEvent({ 
+          type: 'error', 
+          message: typeof error === 'string' ? error : `Failed to create file: ${displayName}` 
+        });
       }
     } finally {
       setNewFileName("");
@@ -216,6 +219,12 @@ const handleSave = async () => {
       }
     } catch (error) {
       console.error("Save failed:", error);
+      if (store.addEvent) {
+        store.addEvent({ 
+          type: 'error', 
+          message: typeof error === 'string' ? error : "An unknown save error occurred." 
+        });
+      }
     }
   };
 
@@ -279,70 +288,42 @@ const handleSave = async () => {
   }, [activeFilePath]);
 
   useEffect(() => {
-    const handleAiEdit = async (e: Event) => {
+    const handleFileReloaded = async (e: Event) => {
       const customEvent = e as CustomEvent;
-      const { file_path, start_line, end_line, replacement_code } = customEvent.detail;
+      const { path } = customEvent.detail;
 
-      // 1. Resolve relative paths (e.g. "test.md") against the current workspacePath
+      // 1. Resolve absolute path
       const separator = workspacePath.includes('\\') ? '\\' : '/';
-      const isAbsolute = /^[a-zA-Z]:[\\/]/.test(file_path) || file_path.startsWith('/');
+      const isAbsolute = /^[a-zA-Z]:[\\/]/.test(path) || path.startsWith('/');
       const resolvedPath = isAbsolute
-        ? file_path.replace(/\//g, separator)
-        : `${workspacePath}${separator}${file_path.replace(/^[\\/]+/, '').replace(/\//g, separator)}`;
+        ? path.replace(/\//g, separator)
+        : `${workspacePath}${separator}${path.replace(/^[\\/]+/, '').replace(/\//g, separator)}`;
 
-      const normalize = (p: string | null) => (p ? p.replace(/\//g, '\\').toLowerCase() : '');
-      const isCurrentlyActive = normalize(activeFilePath) === normalize(resolvedPath);
-
-      // 2. If the target file IS currently open and active in Monaco
-      if (isCurrentlyActive && editorRef.current && monacoRef.current) {
-        const range = new monacoRef.current.Range(start_line, 1, end_line + 1, 1);
-        editorRef.current.executeEdits("weaver-agent", [{
-          range: range,
-          text: replacement_code + '\n'
-        }]);
-
-        const updatedValue = editorRef.current.getValue();
-        setEditorContent(updatedValue);
-        await invoke<string>('fs_write', { path: resolvedPath, contents: updatedValue });
-        console.log(`[Weaver] AI edit applied & saved to active file: ${resolvedPath}`);
-        return;
-      }
-
-      // 3. If the target file is NOT the active tab (background file edit)
       try {
-        let existingContent = "";
-        try {
-          existingContent = await invoke<string>('fs_read', { path: resolvedPath });
-        } catch {
-          existingContent = "";
-        }
-
-        const lines = existingContent.length > 0 ? existingContent.split(/\r?\n/) : [];
-        const startIdx = Math.max(0, (start_line || 1) - 1);
-        const deleteCount = Math.max(0, (end_line || start_line || 1) - start_line + 1);
-        const newLines = replacement_code.split(/\r?\n/);
-
-        lines.splice(startIdx, deleteCount, ...newLines);
-        const updatedContent = lines.join('\n');
-
-        await invoke<string>('fs_write', { path: resolvedPath, contents: updatedContent });
-        await loadDirectory(workspacePath);
-
-        // Automatically open/focus the edited file tab so the user sees the change
+        // Read the freshly patched file directly from disk
+        const freshContent = await invoke<string>('fs_read', { path: resolvedPath });
+        
+        // Open the tab so the user sees the change
         const fileName = resolvedPath.split(/[\\/]/).pop() || resolvedPath;
         addOpenFile(resolvedPath, fileName);
-        setEditorContent(updatedContent);
 
-        console.log(`[Weaver] AI background edit applied & saved to: ${resolvedPath}`);
+        // If it's the active tab, update Monaco's buffer
+        const normalize = (p: string | null) => (p ? p.replace(/\//g, '\\').toLowerCase() : '');
+        if (normalize(activeFilePath) === normalize(resolvedPath)) {
+          setEditorContent(freshContent);
+          if (editorRef.current) {
+            editorRef.current.setValue(freshContent);
+          }
+        }
       } catch (err) {
-        console.error(`[Weaver] Failed to apply AI background edit to ${resolvedPath}:`, err);
+        console.error(`[Weaver] Failed to reload patched file ${resolvedPath}:`, err);
       }
     };
 
-    window.addEventListener('weaver-ai-edit', handleAiEdit);
-    return () => window.removeEventListener('weaver-ai-edit', handleAiEdit);
+    window.addEventListener('weaver-file-reloaded', handleFileReloaded);
+    return () => window.removeEventListener('weaver-file-reloaded', handleFileReloaded);
   }, [activeFilePath, workspacePath]);
-
+  
   const handleOpenFile = (file: FileEntry) => {
     addOpenFile(file.path, file.name);
   };

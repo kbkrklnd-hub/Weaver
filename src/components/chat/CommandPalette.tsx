@@ -338,22 +338,72 @@ ACTIVE WORKSPACE ROOT: ${currentWorkspace}${activeFileContext}`
             appendTokenToLast(parsedPayload.chat_response.slice(streamedChatLen));
           }
 
-          if (parsedPayload.tool_call && parsedPayload.tool_call.name === "edit_local_file") {
-            if (rc.consensus === "REJECT") {
-              addEvent({
-                type: 'error',
-                message: `Review Council REJECTED file edit: ${rc.security}`
-              });
-            } else {
-              const params = parsedPayload.tool_call.parameters;
-              window.dispatchEvent(new CustomEvent('weaver-ai-edit', {
-                detail: params
-              }));
-              
-              addEvent({ 
-                type: 'system', 
-                message: `[Council: ${rc.consensus}] Applied edits to lines ${params.start_line}-${params.end_line} in ${params.file_path.split(/[\\/]/).pop()}` 
-              });
+          if (parsedPayload.tool_call) {
+            if (parsedPayload.tool_call.name === "edit_local_file") {
+              if (rc.consensus === "REJECT") {
+                addEvent({
+                  type: 'error',
+                  message: `Review Council REJECTED file edit: ${rc.security}`
+                });
+              } else {
+                const params = parsedPayload.tool_call.parameters;
+                addEvent({ 
+                  type: 'system', 
+                  message: `[Council: ${rc.consensus}] Staging edits for ${params.file_path.split(/[\\/]/).pop()}...` 
+                });
+
+                try {
+                  // Route the patch directly to the Rust sandbox staging tree
+                  const output = await invoke<string>('validate_and_stage_patch', {
+                    workspacePath: currentWorkspace,
+                    filePath: params.file_path,
+                    startLine: params.start_line,
+                    endLine: params.end_line,
+                    replacementCode: params.replacement_code
+                  });
+                  
+                  addEvent({ type: 'system', message: `Sandbox Result: ${output}` });
+                  
+                  // Instruct Monaco to refresh the active buffer from the newly patched disk file
+                  window.dispatchEvent(new CustomEvent('weaver-file-reloaded', { 
+                    detail: { path: params.file_path } 
+                  }));
+                } catch (err) {
+                  addEvent({ 
+                    type: 'error', 
+                    message: `Patch Staging Failed: ${typeof err === 'string' ? err : 'Unknown error'}` 
+                  });
+                }
+              }
+            } else if (parsedPayload.tool_call.name === "execute_wasm_tool") {
+              if (rc.consensus === "REJECT") {
+                addEvent({
+                  type: 'error',
+                  message: `Review Council REJECTED WASM execution: ${rc.security}`
+                });
+              } else {
+                const params = parsedPayload.tool_call.parameters;
+                const separator = currentWorkspace.includes('\\') ? '\\' : '/';
+                // Route to a dedicated tools directory to keep the workspace root clean
+                const wasmTarget = `${currentWorkspace}${separator}.weaver${separator}tools${separator}${params.wasm_filename}`;
+                
+                addEvent({ 
+                  type: 'system', 
+                  message: `[Council: ${rc.consensus}] Executing WASM sandbox for ${params.wasm_filename}...` 
+                });
+
+                try {
+                  // Tauri automatically maps camelCase JS properties to snake_case Rust arguments
+                  const output = await invoke<string>('wasi_execute', { 
+                    wasmPath: wasmTarget, 
+                    workspacePath: currentWorkspace 
+                  });
+                  
+                  addEvent({ type: 'system', message: `Sandbox Result: ${output}` });
+                } catch (err) {
+                  addEvent({ type: 'error', message: `Sandbox Execution Failed: ${typeof err === 'string' ? err : 'Unknown error'}` });
+                }
+              }
             }
           }
         } catch (e) {

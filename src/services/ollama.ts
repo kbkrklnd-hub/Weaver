@@ -28,15 +28,23 @@ export interface ReviewCouncilAssessment {
   consensus: "APPROVE" | "REJECT";
 }
 
-export interface ToolCallPayload {
-  name: "edit_local_file";
-  parameters: {
-    file_path: string;
-    start_line: number;
-    end_line: number;
-    replacement_code: string;
-  };
-}
+export type ToolCallPayload = 
+  | {
+      name: "edit_local_file";
+      parameters: {
+        file_path: string;
+        start_line: number;
+        end_line: number;
+        replacement_code: string;
+      };
+    }
+  | {
+      name: "execute_wasm_tool";
+      parameters: {
+        wasm_filename: string;
+        args: string[];
+      };
+    };
 
 export interface StructuredAgentResponse {
   thought: string;
@@ -89,7 +97,7 @@ export const AGENT_RESPONSE_SCHEMA = {
       type: "string",
       description: "Clean conversational response shown to the user in the terminal."
     },
-    tool_call: {
+tool_call: {
       anyOf: [
         { type: "null" },
         {
@@ -108,6 +116,30 @@ export const AGENT_RESPONSE_SCHEMA = {
                 replacement_code: { type: "string" }
               },
               required: ["file_path", "start_line", "end_line", "replacement_code"],
+              additionalProperties: false
+            }
+          },
+          required: ["name", "parameters"],
+          additionalProperties: false
+        },
+        {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              enum: ["execute_wasm_tool"]
+            },
+            parameters: {
+              type: "object",
+              properties: {
+                wasm_filename: { type: "string", description: "The name of the pre-approved .wasm tool to run (e.g., 'git_status.wasm')" },
+                args: { 
+                  type: "array", 
+                  items: { type: "string" },
+                  description: "Command line arguments to pass to the WASM tool"
+                }
+              },
+              required: ["wasm_filename", "args"],
               additionalProperties: false
             }
           },

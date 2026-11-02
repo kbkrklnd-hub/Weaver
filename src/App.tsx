@@ -15,6 +15,7 @@ import ApprovalModal from "./components/security/ApprovalModal";
 import ModelsView from "./components/views/ModelsView";
 import TuningView from "./components/views/TuningView";
 import SettingsView from "./components/views/SettingsView";
+import SetupWizard from "./components/setup/SetupWizard";
 
 // The Dynamic Plugin Router
 export function WorkspaceManager() {
@@ -59,6 +60,10 @@ export function WorkspaceManager() {
 
 export default function App() {
   const [chatState, setChatState] = useState<'collapsed' | 'normal' | 'full'>('normal');
+  const [isSetupComplete, setIsSetupComplete] = useState(
+    () => localStorage.getItem('weaver_first_boot_complete') === 'true'
+  );
+  
   const { loadPlugins } = usePluginStore();
 
   // Run once when Weaver boots to load local plugins
@@ -67,32 +72,38 @@ export default function App() {
   }, [loadPlugins]);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-900 text-zinc-50 font-sans cursor-default select-none">
+    <>
+      {!isSetupComplete && (
+        <SetupWizard onComplete={() => setIsSetupComplete(true)} />
+      )}
       
-      <div className="flex flex-1 min-h-0">
-        <Sidebar />
+      <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-900 text-zinc-50 font-sans cursor-default select-none">
+        
+        <div className="flex flex-1 min-h-0">
+          <Sidebar />
 
-        <main className="flex-1 flex flex-col min-w-0 bg-zinc-900">
-          
-          <div className={`overflow-y-auto transition-all duration-300 ease-in-out ${chatState === 'full' ? 'h-0 hidden' : 'flex-1'}`}>
-            <Switch>
-              <Route path="/" component={WorkspaceManager} />
-              <Route path="/workspace" component={WorkspaceManager} />
-              <Route path="/models" component={ModelsView} />
-              <Route path="/tuning" component={TuningView} />
-              <Route path="/settings" component={SettingsView} />
-            </Switch>
-          </div>
+          <main className="flex-1 flex flex-col min-w-0 bg-zinc-900">
+            
+            <div className={`overflow-y-auto transition-all duration-300 ease-in-out ${chatState === 'full' ? 'h-0 hidden' : 'flex-1'}`}>
+              <Switch>
+                <Route path="/" component={WorkspaceManager} />
+                <Route path="/workspace" component={WorkspaceManager} />
+                <Route path="/models" component={ModelsView} />
+                <Route path="/tuning" component={TuningView} />
+                <Route path="/settings" component={SettingsView} />
+              </Switch>
+            </div>
 
-          <CommandPalette chatState={chatState} setChatState={setChatState} />
+            <CommandPalette chatState={chatState} setChatState={setChatState} />
 
-        </main>
+          </main>
 
-        <ChainOfThought />
+          <ChainOfThought />
+        </div>
+
+        <StatusBar />
+        <ApprovalModal />
       </div>
-
-      <StatusBar />
-      <ApprovalModal />
-    </div>
+    </>
   );
 }
