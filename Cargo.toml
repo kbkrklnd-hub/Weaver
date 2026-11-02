@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "src-tauri",
+    "crates/weaver-core",
+    "crates/weaver-daemon"
+]
+resolver = "2"
